@@ -1,0 +1,136 @@
+/*
+  top, right, bottom, left is the css standard
+  so for planes, I recommend front, top, right, back, bottom, left
+*/
+
+.three-d, .three-d > * {
+  --x-rotation: 0;
+  --y-rotation: 0;
+  --z-rotation: 0;
+  --x-translation: 0;
+  --y-translation: 0;
+  --z-translation: 0;
+  --width: var(width);
+  --height: var(height);
+  --depth: 0;
+}
+
+.three-d > * {
+  --width: inherit;
+  --height: inherit;
+  --depth: inherit;
+}
+
+.three-d {
+  width: var(--width);
+  height: var(--height);
+  transform-style: preserve-3d;
+  margin: auto;
+}
+
+.three-d.outlined, .three-d.outlined .three-d, .three-d.outlined .three-d.object > *, .three-d.outlined.object > * {
+  outline: 1px dotted gray;
+}
+
+.three-d.space {
+  perspective: 200vmax;
+  overflow: hidden;
+}
+
+.three-d.reflective.space {
+  -webkit-box-reflect: below 0 url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjIxMG1tIiBoZWlnaHQ9IjI5N21tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMTAgMjk3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4NCjxkZWZzPg0KPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMTA3LjY3IiB4Mj0iMTA3LjQ1IiB5MT0iMzkzLjc0IiB5Mj0iMTQ0LjM4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEuMzYxMiAwIDAgMSAtMzkuMjQ1IDApIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQo8c3RvcCBzdG9wLWNvbG9yPSIjMDYwMDAwIiBvZmZzZXQ9IjAiLz4NCjxzdG9wIHN0b3AtY29sb3I9IiMwNjAwMDAiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxIi8+DQo8L2xpbmVhckdyYWRpZW50Pg0KPC9kZWZzPg0KPG1ldGFkYXRhPg0KPHJkZjpSREY+DQo8Y2M6V29yayByZGY6YWJvdXQ9IiI+DQo8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4NCjxkYzp0eXBlIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiLz4NCjxkYzp0aXRsZS8+DQo8L2NjOldvcms+DQo8L3JkZjpSREY+DQo8L21ldGFkYXRhPg0KPHJlY3QgeD0iLS4zMjUxOSIgeT0iMS4wNDA5IiB3aWR0aD0iMjEwLjM5IiBoZWlnaHQ9IjI5Ni42OSIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2Utd2lkdGg9Ii4zMDg2OCIvPg0KPC9zdmc+');
+}
+
+.three-d.object {
+    position: relative;
+}
+
+.three-d.object > * {
+  position: absolute;
+  transform:  translateX(var(--x-translation))
+              translateY(var(--y-translation))
+              translateZ(var(--z-translation))
+              rotateX(var(--x-rotation))
+              rotateY(var(--y-rotation))
+              rotateZ(var(--z-rotation));
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+}
+
+.three-d.shaded.object > * {
+  box-shadow: inset 0px 0px 100px #00000075;
+}
+
+.three-d.seated.object > *:nth-child(5):nth-last-child(2) {
+  /* the 5th, bottom plane has a shadow when seated */
+  box-shadow: -7px -7px 20px 0px #000000b5;
+}
+
+/*
+ See http://lea.verou.me/2011/01/styling-children-based-on-their-number-with-css3/
+*/
+
+/* two faces */
+.three-d.object > *:nth-child(2):nth-last-child(1) {
+  /* the 2nd face */
+  --y-rotation: 180deg;
+}
+
+/* six faces */
+
+.three-d.object > *:nth-child(6):nth-last-child(1) {
+  /* the 6th face */
+  --x-translation: calc(calc(var(--width) / -2) + calc(calc(var(--width) - var(--depth)) / 2));
+  --y-rotation: 270deg;
+  width: var(--depth);
+}
+
+.three-d.object > *:nth-child(5):nth-last-child(2) {
+  /* the 5th face */
+  --y-translation: calc(calc(var(--height) / 2) + calc(calc(var(--height) - var(--depth)) / 2));
+  --x-rotation: 270deg;
+  height: var(--depth);
+}
+
+.three-d.object > *:nth-child(4):nth-last-child(3) {
+  /* the 4th face */
+  --z-translation: calc(var(--depth) / -2);
+  --y-rotation: 180deg;
+}
+
+.three-d.object > *:nth-child(3):nth-last-child(4) {
+  /* the 3rd face */
+  --x-translation: calc(calc(var(--width) / 2) + calc(calc(var(--width) - var(--depth)) / 2));
+  --y-rotation: 90deg;
+  width: var(--depth);
+}
+
+.three-d.object > *:nth-child(2):nth-last-child(5) {
+  /* the 2nd face */
+  --y-translation: calc(calc(var(--height) / -2) + calc(calc(var(--height) - var(--depth)) / 2));
+  --x-rotation: 90deg;
+  height: var(--depth);
+}
+
+.three-d.object > *:nth-child(1):nth-last-child(6) {
+  /* the 1st face */
+  --z-translation: calc(var(--depth) / 2);
+}
+
+.three-d.rotating {
+    animation: rotating 10s linear infinite;
+}
+
+@keyframes rotating {
+    from {
+        transform: rotate3d(1, 1, 1, 0deg);
+    }
+    to {
+        transform: rotate3d(1, 1, 1, 360deg);
+    }
+}
+
+.rotating {
+    -webkit-animation: rotating 2s linear infinite;
+}
