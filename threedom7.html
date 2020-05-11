@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="threedom.css">
+    <style media="screen">
+      #space {
+        height: 65vh;
+      }
+      #wheel {
+        top: 18vh;
+        position: relative;
+      }
+      #wheel > * {
+        box-shadow: 0px 0px 12px 0px #00000075;
+        background-image: url('https://images.unsplash.com/photo-1589138193516-8fedb70ca778?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60');
+        background-size: cover;
+        height: 90%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="space" class="three-d reflective space">
+        <div id="wheel" class="three-d rolling wheel" style="--width:200px;--height:250px;--depth:200px">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+    </div>
+  </body>
+</html>

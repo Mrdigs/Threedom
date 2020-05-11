@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        margin: 0;
+      }
+      #space {
+        height: 100vh;
+        perspective-origin: 50% 0;
+      }
+      #carousel {
+        top: calc(50% - calc(var(--height) / 2));
+      }
+      #carousel > * {
+        background-image: url('panorama.jpg')
+      }
+      #carousel > * > *:nth-child(2) {
+        background: #00000065
+      }
+    </style>
+  </head>
+  <body>
+    <div id="space" class="three-d space">
+        <div id="carousel" class="three-d spinning wrapped carousel" style="--width:200px;--height:250px;--depth:200px">
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+          <div class="three-d object"><div></div><div></div></div>
+        </div>
+    </div>
+  </body>
+</html>

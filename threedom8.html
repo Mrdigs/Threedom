@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="threedom.css">
+    <style media="screen">
+      body {
+        background: #1b1f27;
+        height: 100vh;
+        margin: 0;
+      }
+      #space {
+        perspective-origin: 100% 10%;
+        text-align: center;
+        height: 100%;
+      }
+      #space .object {
+        display: inline-block;
+        top: calc(50% - var(--height) / 2);
+        margin: 5px;
+        --width: 20px;
+        --height: 165px;
+        --depth: 20px;
+        animation-duration: 1.555s;
+        animation-timing-function: cubic-bezier(0.54, 0, 0.79, 0.29);
+      }
+      #space .object:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+      #space .object:nth-child(3) {
+        animation-delay: 0.10s;
+      }
+      #space .object:nth-child(4) {
+        animation-delay: 0.15s;
+      }
+      #space .object:nth-child(5) {
+        animation-delay: 0.20s;
+      }
+      #space .object:nth-child(6) {
+        animation-delay: 0.25s;
+      }
+      #space .object > * {
+        background: #2d3443;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="space" class="three-d space">
+        <div class="three-d rolling shaded object">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+        <div class="three-d rolling shaded object">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+        <div class="three-d rolling shaded object">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+        <div class="three-d rolling shaded object">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+        <div class="three-d rolling shaded object">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+        <div class="three-d rolling shaded object">
+          <div></div><div></div><div></div>
+          <div></div><div></div><div></div>
+        </div>
+    </div>
+  </body>
+</html>

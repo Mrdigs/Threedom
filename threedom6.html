@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        margin: 0;
+      }
+      #space {
+        height: 100vh;
+        perspective-origin: 50% 0;
+      }
+      #carousel {
+        top: calc(50% - calc(var(--height) / 2));
+      }
+      #carousel .object > * {
+        background-image:
+        radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%),
+        radial-gradient(closest-side, transparent 0%, transparent 75%, #B6CC66 76%, #B6CC66 85%, #EDFFDB 86%, #EDFFDB 94%, #FFFFFF 95%, #FFFFFF 103%, #D9E6A7 104%, #D9E6A7 112%, #798B3C 113%, #798B3C 121%, #FFFFFF 122%, #FFFFFF 130%, #E0EAD7 131%, #E0EAD7 140%);
+        background-size: 40px 40px;
+        background-color: #C8D3A7;
+        background-position: 0 0, 20px 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="space" class="three-d space">
+        <div id="carousel" class="three-d spinning carousel" style="--width:300px;--height:300px;--depth:300px">
+          <div>
+            <div class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+          <div>
+            <div class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+          <div>
+            <div class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </body>
+</html>
