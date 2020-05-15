@@ -1,0 +1,32 @@
+{
+  "name": "threedom",
+  "version": "1.0.0",
+  "description": "A 3D pure CSS library",
+  "bin": {
+    "threedom": "compressor.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mrdigs/Threedom.git"
+  },
+  "author": "Darren Scott",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Mrdigs/Threedom/issues"
+  },
+  "homepage": "https://github.com/Mrdigs/Threedom#readme",
+  "devDependencies": {
+    "dart-sass": "^1.25.0",
+    "npm-run-all": "^4.1.5",
+    "uglifycss": "0.0.29"
+  },
+  "scripts": {
+    "build:scss-compile": "dart-sass src/threedom.scss build/threedom.css",
+    "build:css-compress": "node scripts/compressor.js",
+    "dist:css-minify": "uglifycss build/threedom.min.css > dist/threedom.min.css",
+    "build": "npm-run-all -s build:* dist:*"
+  }
+}

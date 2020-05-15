@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="threedom.css">
+    <script type="text/javascript" src="http://photon.attasi.com/js/photon.min.js"></script>
+    <link rel="stylesheet" href="../build/threedom.css">
     <style media="screen">
       body {
         background: black;
@@ -12,9 +13,6 @@
       #space {
         height: 100vh;
         perspective-origin: 50% 0;
-      }
-      #carousel {
-        top: calc(50% - calc(var(--height) / 2));
       }
       #carousel .object > * {
         background-image:
@@ -28,23 +26,34 @@
   </head>
   <body>
     <div id="space" class="three-d space">
-        <div id="carousel" class="three-d spinning carousel" style="--width:300px;--height:300px;--depth:300px">
+        <figure id="carousel" class="three-d spinning carousel" style="--width:300px;--height:300px;--depth:300px">
           <div>
-            <div class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
+            <figure class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
               <div></div><div></div><div></div><div></div><div></div><div></div>
-            </div>
+            </figure>
           </div>
           <div>
-            <div class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
+            <figure class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
               <div></div><div></div><div></div><div></div><div></div><div></div>
-            </div>
+            </figure>
           </div>
           <div>
-            <div class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
+            <figure class="three-d rotating object" style="--width:75px;--height:75px;--depth:75px">
               <div></div><div></div><div></div><div></div><div></div><div></div>
-            </div>
+            </figure>
           </div>
-        </div>
+        </figure>
     </div>
+    <script type="text/Xjavascript">
+      var light = new Photon.Light(), faces = [];
+      Array.from(document.querySelectorAll('figure.three-d')).forEach(function(figure) {
+        faces.push(new Photon.FaceGroup(figure, figure.querySelectorAll('> div')));
+      });
+      setInterval(function() {
+        faces.forEach(function(face) {
+          face.render(light, true);
+        });
+      }, 500);
+    </script>
   </body>
 </html>

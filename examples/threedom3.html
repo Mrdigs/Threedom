@@ -3,18 +3,21 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="threedom.css">
+    <link rel="stylesheet" href="../build/threedom.css">
     <style media="screen">
       body {
-        background: black;
         margin: 0;
       }
       #space {
         height: 50vh;
-        background: linear-gradient(transparent, #3b3b3b);
+        background: linear-gradient(transparent, #7f9697);
+        perspective-origin: 50% -50%;
+        perspective: 5000px;
       }
       #cube {
-        top: calc(50% - calc(var(--height) / 2));
+        align-self: flex-end;
+        margin-bottom: -18px;
+        transform: rotateY(65deg);
         --width:30vh;
         --height:30vh;
         --depth:30vh;
@@ -27,7 +30,7 @@
   </head>
   <body>
     <div id="space" class="three-d reflective space">
-        <div id="cube" class="three-d rotating shaded object">
+        <div id="cube" class="three-d shaded seated object">
           <div></div>
           <div></div>
           <div></div>

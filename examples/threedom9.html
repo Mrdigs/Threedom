@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      #space {
+        perspective-origin: 50% 0;
+        font-size: 75px;
+      }
+      #carousel {
+        --width: 4em;
+        --height: 4em;
+      }
+      #carousel .object {
+        --width: 1em;
+        --height: 1em;
+        --depth: 1em;
+      }
+      #carousel .object > * {
+        background: black;
+        border: 0.02em solid white;
+      }
+    </style>
+  </head>
+  <body>
+    <figure id="space" class="three-d space">
+        <figure id="carousel" class="three-d spinning carousel">
+          <div>
+            <div class="three-d rotating object">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+          <div>
+            <div class="three-d rotating object">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+          <div>
+            <div class="three-d rotating object">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+        </figure>
+    </figure>
+  </body>
+</html>
