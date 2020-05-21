@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      .three-d.space {
+        margin: 5vmin;
+      }
+    </style>
+  </head>
+  <body style="--unit:1vmin">
+    <h1>Cylinders</h1>
+    <p>
+      Cylinders support up to 18 faces, although one face is reserved for the
+      top and one for the bottom, so in practice they have a maximum of 16
+      side planes.
+    </p>
+    <p>
+      <em>This limit is practical rather than theoretical: extra faces grow
+      the size of the CSS file quite quickly. The maximum supported faces
+      can be increased in the Sass file by changing the <strong>$max_faces</strong>
+      variable.</em>
+    </p>
+    <figure class="three-d space">
+      <figure class="sample three-d extra slowly rotating cylinder" style="--width:5;--height:20">
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div>
+      </figure>
+    </figure>
+    <p>
+      This is an extremely short cylinder that resembles a disc more than a
+      cylinder. It is set to be rolling rather than spinning because as a
+      cylinder, it's not naturally face-on and so you'd only see the thin
+      edge.
+    </p>
+    <p>
+      <em>I think there's actually no current way to get a 3D disc-like shape
+      (other than a 2-face object with border-radius) that spins. It's probably
+      worth creating a "disc" which is to a cylinder what a wheel is to a
+      carousel.</em>
+    </p>
+    <figure class="three-d space" style="margin:10">
+      <figure class="sample three-d extra quickly rolling cylinder" style="--width:20;--height:2">
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+      </figure>
+    </figure>
+  </body>
+</html>

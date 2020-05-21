@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      .three-d.space {
+        margin: 5vmin;
+      }
+    </style>
+  </head>
+  <body style="--unit:1vmin">
+    <h1>Cones</h1>
+    <p>
+      With one face reserved for the base, cones support up to
+      <strong>$max_faces - 1</strong> (that's 17 by default) faces arranged
+      around the base in a conical shape.
+    </p>
+    <figure class="three-d space">
+      <figure class="sample three-d rotating cone" style="--width:20;--height:20;--depth:20">
+        <div>1</div><div>2</div><div>3</div><div>4</div>
+        <div>5</div><div>6</div><div>7</div><div>8</div>
+        <div>9</div><div>10</div><div>11</div><div>12</div>
+        <div>13</div><div>14</div><div>15</div><div>16</div>
+        <div>17</div><div>18</div>
+      </figure>
+    </figure>
+    <p>
+      Cones only support a width/depth ratio of 1, but they can have any height.
+      Here is a tall cone:
+    </p>
+    <figure class="three-d space">
+      <figure class="sample three-d rotating cone" style="--width:20;--height:30;--depth:20">
+        <div>1</div><div>2</div><div>3</div><div>4</div>
+        <div>5</div><div>6</div><div>7</div><div>8</div>
+      </figure>
+    </figure>
+    <p>
+      Here is a squat cone with 5 faces in total:
+    </p>
+    <figure class="three-d space">
+      <figure class="sample three-d rotating cone" style="--width:20;--height:10;--depth:20">
+        <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+      </figure>
+    </figure>
+  </body>
+</html>

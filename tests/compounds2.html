@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.min.css">
+    <style media="screen">
+      .three-d.space {
+        margin: 5vmax;
+      }
+    </style>
+  </head>
+  <body style="--unit:1px">
+    <h1>Compound Animations</h1>
+    <p>
+      The components of compound objects should all be able to be animated
+      independently, like moving parts of a machine.
+    </p>
+    <h3>Single Plane</h3>
+    <p>
+      These two cylinders are sat on each face of a rotating 2 face object,
+      hence they are facing in opposite directions. Each of them is set to be
+      spinning, so they should spin individually while also rotating with the
+      parent object. Note they are spinning in opposite directions because
+      of their distinct orientation.
+    </p>
+    <figure class="three-d private space" style="height:25vmax">
+      <figure class="three-d slowly rotating object" style="--width:50;--height:50;--depth:50">
+        <div>
+          <figure class="sample spinning three-d cylinder" style="--height:150">
+            <div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample spinning three-d cylinder" style="--height:150">
+            <div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <p>
+      Here is a cylinder with a spinning cube at either end, each of which
+      has a spinning cylinder on one face:
+    </p>
+
+    <figure class="three-d private space" style="height:25vmax">
+      <figure class="sample three-d unclipped slowly rotating cylinder" style="--width:20;--height:80;--depth:20">
+        <div>
+          <figure class="sample spinning three-d object" style="--width:50;--height:50;--depth:50">
+            <div></div>
+            <div>
+              <figure class="sample spinning three-d cylinder" style="--width:20;--height:80;--depth:20">
+                <div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div>
+              </figure>
+            </div>
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+        <div>
+          <figure class="sample spinning three-d object" style="--width:50;--height:50;--depth:50">
+            <div></div><div></div><div></div><div></div>
+            <div>
+              <figure class="sample spinning three-d cylinder" style="--width:20;--height:80;--depth:20">
+                <div></div><div></div><div></div><div></div><div></div>
+                <div></div><div></div><div></div><div></div><div></div>
+              </figure>
+            </div>
+            <div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+
+    <h3>Compounded</h3>
+    <p>
+      This compounded object consists of a rolling wheel inside of a spinning
+      carousel. It should look something like a gyroscope.
+    </p>
+    <figure class="three-d private space" style="height:25vmax">
+      <figure class="three-d rotating compound object" style="--width:200;--height:200;--depth:200">
+        <div>
+          <figure class="sample three-d rolling wheel" style="--width:50;--height:170">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d spinning carousel" style="--height:50;">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+  </body>
+</html>

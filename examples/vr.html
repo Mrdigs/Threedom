@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        color: white;
+      }
+      #panorama {
+        --width:1.5;
+        --depth:1.5;
+        --height:1.5;
+        --translate-z:2;
+        --unit: 100vw;
+        animation-duration: 180s;
+      }
+      #panorama > * {
+        background-image: url('images/panorama1.jpg') !important;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>3D CSS VR</h1>
+
+    <figure class="three-d private space" style="--width:500;--height:500">
+        <figure id="panorama" class="three-d spinning wrapped carousel">
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+        </figure>
+    </figure>
+
+
+  </body>
+</html>

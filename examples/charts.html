@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        color: white;
+      }
+      #barchart {
+        perspective-origin: 50% -300%;
+      }
+      #barchart .bar {
+        --width: 60;
+        --height: 0;
+        --rotate-y: -20deg;
+        margin: 0 20px;
+        transition: height 4s;
+        align-self: flex-end;
+      }
+      body.loaded #barchart .bar {
+        --height: var(--data);
+      }
+    </style>
+    <script type="text/javascript">
+      window.onload = function() {
+        setTimeout(function() {
+          document.body.className += 'loaded';
+        }, 0);
+      };
+    </script>
+  </head>
+  <body>
+    <h1>3D CSS Charts</h1>
+
+    <figure id="barchart" class="three-d space">
+      <figure style="transform:rotateY(30deg);height:200px">
+        <figure class="three-d shaded cylinder bar" style="--data:50;--background:#7ed6be">
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+        </figure>
+        <figure class="three-d shaded cylinder bar" style="--data:80;--background:#ecf081">
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+        </figure>
+        <figure class="three-d shaded cylinder bar" style="--data:150;--background:#ffbe40">
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+        </figure>
+        <figure class="three-d shaded cylinder bar" style="--data:120;--background:#ef746f">
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+        </figure>
+        <figure class="three-d shaded cylinder bar" style="--data:200;--background:#bc8696">
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+          <div></div><div></div><div></div><div></div><div></div><div></div>
+        </figure>
+      </figure>
+    </figure>
+
+    <figure class="three-d space" style="--height:200;margin-top:100px">
+      <figure class="three-d carousel" style="--width:0;transform:rotateX(160deg)">
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:200;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:300;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d shaded cone" style="--width:80;--height:100;--depth:80;--background:#7ed6be">
+            <div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+  </body>
+</html>

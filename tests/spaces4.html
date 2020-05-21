@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.min.css">
+  </head>
+  <body style="--unit:1vmin">
+    <h1>Reflective Spaces</h1>
+    <p>
+      If a space has the class "reflective", then a mirror image of the objects
+      inside the space is produced below it, giving the impression of a
+      reflective floor that the objects are hovering over.
+    </p>
+    <p>
+      The gradient that fades out the reflection uses an SVG mask rather than
+      a CSS gradient. A CSS gradient would need to start at transparent and
+      fade to specific colour (e.g. white if the background is white). Because
+      it is a mask, it works on any background colour.
+    </p>
+    <figure class="three-d reflective space" style="margin-bottom:20vmax;height:35vmax">
+      <figure class="sample three-d extra slowly rotating object" style="--width:20;--height:20;--depth:20">
+        <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+      </figure>
+      <figure class="sample three-d slowly rotating object" style="--width:10;--height:10;--depth:10">
+        <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+      </figure>
+    </figure>
+  </body>
+</html>

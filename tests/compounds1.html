@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.min.css">
+    <style media="screen">
+      .three-d.space {
+        margin: 5vmax;
+      }
+    </style>
+  </head>
+  <body style="--unit:1px">
+    <h1>Compounds</h1>
+    <h3>Standard</h3>
+    <p>
+      Standard behaviour is that when an object is placed on the face of another
+      object, it is rotated and translated so that it sits on the surface: i.e
+      the plane of the face is the nested objects "floor".
+    </p>
+    <p>
+      In this test, the two cubes are on either face of a 2 faced object, so
+      they are mirrrors of each other (with the first made smaller). The
+      cylinder is then placed on the face of the 6th face of the larger
+      cube.
+    </p>
+    <figure class="three-d space">
+      <figure class="three-d slowly rotating object" style="--width:200;--height:200;--depth:200">
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:80;--height:80;--depth:80">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>
+              <figure class="sample three-d cylinder" style="--width:30;--height: 50">
+                <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+              </figure>
+            </div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space">
+      <figure class="three-d slowly rotating object" style="--width:50;--height:50;--depth:50">
+        <div>
+          <figure class="sample three-d cone" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d cone" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space">
+      <figure class="sample three-d slowly rotating object" style="--width:55;--height:55;--depth:55">
+        <div>
+          <figure class="sample three-d cone" style="--width:60;--height:60;--depth:60;--rotate-x:-90deg;--translate-y:-25;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d cone" style="--width:60;--height:60;--depth:60;--rotate-x:-90deg;--translate-y:-25;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d cone" style="--width:60;--height:60;--depth:60;--rotate-x:-90deg;--translate-y:-25;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d cone" style="--width:60;--height:60;--depth:60;--rotate-x:-90deg;--translate-y:-25;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d cone" style="--width:60;--height:60;--depth:60;--rotate-x:-90deg;--translate-y:-25;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d cone" style="--width:60;--height:60;--depth:60;--rotate-x:-90deg;--translate-y:-25;">
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+
+    <p>
+      Here, there is a smaller cube on every face of a larger cube, with each of
+      the larger cubes faces being a div containing the child div:
+    </p>
+
+    <figure class="three-d space">
+      <figure class="sample three-d slowly rotating object" style="--width:100;--height:100;--depth:100">
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div><div>3</div>
+            <div>4</div><div>5</div><div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <p>
+      Here, the child cubes are the faces themselves, which causes problems:
+    </p>
+
+    <figure class="three-d space">
+      <figure class="sample three-d slowly rotating object" style="--width:100;--height:100;--depth:100">
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div><div>3</div>
+          <div>4</div><div>5</div><div>6</div>
+        </figure>
+      </figure>
+    </figure>
+
+
+    <h3>Compound</h3>
+    <p>
+      Compounds with "compound" class overlap each other - they occupy the same
+      space unless manually translated by the user. Note that compounded objects
+      inherit the --width, --height and --depth of the parent object: here, one
+      of the blocks inherits the parent's width, and the other inherits the
+      parent's height. This allows the --width and --height and the parent to
+      be adjusted independently of the children, and the children will resize
+      automatically.
+    </p>
+    <p>
+      <strong>TODO: In these examples, each face of the parent object needs
+      to be a div, inside which the child object is nested. It would be much
+      better to not need this. Note that the carousel test below does not
+      need it, so there is something different about it which allows it.</strong>
+    </p>
+    <figure class="three-d space">
+      <figure class="three-d rotating compound object" style="--width:200;--height:200;--depth:200">
+        <div>
+          <figure class="sample three-d object" style="--height:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+    <figure class="three-d space">
+      <figure class="three-d rotating compound object" style="--width:200;--height:100;--depth:200">
+        <div>
+          <figure class="sample three-d object" style="--height:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+    <figure class="three-d space">
+      <figure class="three-d rotating compound object" style="--width:100;--height:200;--depth:200">
+        <div>
+          <figure class="sample three-d object" style="--height:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--depth:50">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <h3>Coumpound Tetrahedrons</h3>
+    <p>
+      Compounding tetrahedrons possibly needs some work. I would expect the 1st
+      one to look like the 2nd, and the 3rd one to have the bases facing rather
+      than the apex.
+    </p>
+
+    <figure class="three-d space">
+      <figure class="three-d rotating compound object" style="--width:200;--height:200;--depth:200">
+        <figure class="sample three-d object">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+        </figure>
+        <figure class="sample three-d object">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+        </figure>
+      </figure>
+    </figure>
+
+    <figure class="three-d space">
+      <figure class="three-d rotating compound object" style="--width:200;--height:200;--depth:200">
+        <figure class="sample three-d object" style="--rotate-x:180deg;--translate-y:calc(var(--height) / -4)">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+        </figure>
+        <figure class="sample three-d object">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+        </figure>
+      </figure>
+    </figure>
+
+    <p>
+      Note the difference between these two. The 1st has divs as the faces of the
+      parent and the other does not - the child objects *are* the faces. Which
+      is correct, if either?
+    </p>
+
+    <figure class="three-d space">
+      <figure class="three-d rotating object" style="--width:200;--height:200;--depth:200">
+        <div>
+          <figure class="sample three-d object">
+            <div>1</div><div>2</div>
+            <div>3</div><div>4</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object">
+            <div>1</div><div>2</div>
+            <div>3</div><div>4</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space">
+      <figure class="three-d rotating object" style="--width:200;--height:200;--depth:200">
+        <figure class="sample three-d object">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+        </figure>
+        <figure class="sample three-d object">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+        </figure>
+      </figure>
+    </figure>
+
+    <h3>Tetrahedrons as Parent</h3>
+
+    <p>
+      Placing other objects on the faces of tetrahedrons can be problematic
+      because the faces are clipped to shape with <code>clip-path</code> which
+      then clips the child object.
+    </p>
+
+    <p>
+      <strong>TODO: </strong> investigate automatically NOT clipping the faces
+      of a tetrahedron when they are 3D. In fact, maybe there should be a
+      <em>general</em> rule which says elements with the <em>three-d</em>
+      class should never be clipped...
+    </p>
+
+    <figure class="three-d space">
+      <figure class="three-d rotating object" style="--width:200;--height:200;--depth:200">
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+      </figure>
+    </figure>
+
+    <p>
+      Applying the "unclipped" class resolves this, but it still looks a mess:
+    </p>
+
+    <figure class="three-d space">
+      <figure class="three-d unclipped rotating object" style="--width:200;--height:200;--depth:200">
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+        <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+          <div>1</div><div>2</div>
+          <div>3</div><div>4</div>
+          <div>5</div><div>6</div>
+        </figure>
+      </figure>
+    </figure>
+
+    <p>
+      Wrapping each child in a div produces the expected output. This definitely
+      has something to do with how faces which aren't 3D objects themselves do
+      not inherit the parent objects custom variables. It's probably good there
+      is this method of isolation, but the difference should not be between
+      neat and messy!
+    </p>
+
+    <figure class="three-d space">
+      <figure class="three-d unclipped rotating object" style="--width:200;--height:200;--depth:200">
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div>
+            <div>3</div><div>4</div>
+            <div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div>
+            <div>3</div><div>4</div>
+            <div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div>
+            <div>3</div><div>4</div>
+            <div>5</div><div>6</div>
+          </figure>
+        </div>
+        <div>
+          <figure class="sample three-d object" style="--width:50;--height:50;--depth:50">
+            <div>1</div><div>2</div>
+            <div>3</div><div>4</div>
+            <div>5</div><div>6</div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <p>
+      Here, I take the above object and apply some colours to the parent faces.
+      see how the
+    </p>
+
+
+
+    <h3>2 Faced Objects as faces</h3>
+    <p>
+      This carousel has a 2 faced object for each face. As 2 faced objects
+      have simply a front and a back, it creates inside faces of the carousel
+      which can be coloured differently to the outside faces.
+    </p>
+    <p>
+      For this work, each child object needs to sit in the same plane as the
+      face rather than being perpendicular to it as in the first example - so
+      it has to have the "compound" class.
+    </p>
+    <p>
+      <strong>TODO</strong> Note working in Firefox, check it.
+    </p>
+    <figure class="three-d space" style="perspective-origin: 0 -200px;">
+      <figure id="carousel" class="three-d spinning compound wrapped carousel" style="--width:200;--height:100;--depth:200">
+        <figure class="three-d object"><div style="background:magenta"></div><div style="background:blue"></div></figure>
+        <figure class="three-d object"><div style="background:magenta"></div><div style="background:green"></div></figure>
+        <figure class="three-d object"><div style="background:magenta"></div><div style="background:yellow"></div></figure>
+        <figure class="three-d object"><div style="background:magenta"></div><div style="background:red"></div></figure>
+        <figure class="three-d object"><div style="background:magenta"></div><div style="background:orange"></div></figure>
+        <figure class="three-d object"><div style="background:magenta"></div><div style="background:pink"></div></figure>
+      </figure>
+    </figure>
+
+  </body>
+</html>

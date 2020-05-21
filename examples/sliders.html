@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        color: white;
+      }
+      .space {
+        perspective: inherit !important;
+      }
+      /*
+        --index is a built-in Threedom CSS variable which is set on every
+        child of any element with the .three-d class and contains a counter
+        beginning with 0 (so the 1st child has an --index of 0).
+
+        We can take advantage of this counter to code both the transition
+        delay, and the slicing of the image automatically.
+      */
+      #slider1 .slider {
+        --width: 70;
+        --height: 500;
+        --slice: var(--index);
+        transition: transform 0.8s;
+        transition-delay: calc(0.05s * var(--slice));
+      }
+      #slider1 .slider > * {
+        background-size: cover;
+        background-position-x: calc(-70px * var(--slice));
+      }
+      #slider1 .slider > *:nth-child(1) {
+        background-image: url(https://images.pexels.com/photos/3715436/pexels-photo-3715436.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+      #slider1 .slider > *:nth-child(2) {
+        background-image: url(https://images.pexels.com/photos/3312664/pexels-photo-3312664.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+      #slider1 .slider > *:nth-child(3) {
+        background-image: url(https://images.pexels.com/photos/3989816/pexels-photo-3989816.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+      #slider1 .slider > *:nth-child(4) {
+        background-image: url(https://images.pexels.com/photos/3977529/pexels-photo-3977529.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+
+
+      #slider2 .slider {
+        --width: 70;
+        --height: 350;
+        --slice: var(--index);
+        transition: transform 0.8s;
+        transition-delay: calc(0.05s * var(--slice));
+      }
+      #slider2 .slider > * {
+        background-size: cover;
+        background-position-x: calc(-70px * var(--slice));
+      }
+      #slider2 .slider > *:nth-child(1) {
+        background-image: url(https://images.pexels.com/photos/3715436/pexels-photo-3715436.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+      #slider2 .slider > *:nth-child(2) {
+        background-image: url(https://images.pexels.com/photos/3312664/pexels-photo-3312664.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+      #slider2 .slider > *:nth-child(3) {
+        background-image: url(https://images.pexels.com/photos/3989816/pexels-photo-3989816.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+      #slider2 .slider > *:nth-child(4) {
+        background-image: url(https://images.pexels.com/photos/3977529/pexels-photo-3977529.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+      }
+    </style>
+    <script type="text/javascript">
+      function slide(button) {
+        var counter = button.dataset.clicked++;
+        var property = button.dataset.property;
+        var increment = parseInt(button.dataset.increment);
+        var container = document.querySelector(button.dataset.container);
+        container.style.setProperty(property, (counter * increment) + 'deg')
+      }
+    </script>
+  </head>
+  <body>
+    <h1>3D CSS Image Sliders</h1>
+
+    <figure id="slider1" class="three-d space">
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider wheel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+    </figure>
+    <div class="actions">
+      <button data-clicked="1" data-container="#slider1" data-property="--rotate-x" data-increment="-90" onclick="slide(this)">Slide</button>
+    </div>
+
+    <figure id="slider2" class="three-d space">
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+      <figure class="three-d slider carousel">
+        <div></div><div></div><div></div><div></div>
+      </figure>
+    </figure>
+    <div class="actions">
+      <button data-clicked="1" data-container="#slider2" data-property="--rotate-y" data-increment="-90" onclick="slide(this)">Slide</button>
+    </div>
+  </body>
+</html>

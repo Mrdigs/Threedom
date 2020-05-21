@@ -5,12 +5,26 @@
  * it will be useful, but WITHOUT ANY WARRANTY.
  */
 .three-d {
+  /*
   --a: var(--rotate-x, 0);
   --b: var(--rotate-y, 0);
   --c: var(--rotate-z, 0);
   --d: var(--translate-x, 0);
   --e: var(--translate-y, 0);
   --f: var(--translate-z, 0);
+  */
+  --a: 0;
+  --b: 0;
+  --c: 0;
+  --d: 0;
+  --e: 0;
+  --f: 0;
+  --rotate-x: 0;
+  --rotate-y: 0;
+  --rotate-z: 0;
+  --translate-x: 0;
+  --translate-y: 0;
+  --translate-z: 0;
 }
 .three-d > *:not(.three-d) {
   --a: 0;
@@ -19,6 +33,12 @@
   --d: 0;
   --e: 0;
   --f: 0;
+  --rotate-x: 0;
+  --rotate-y: 0;
+  --rotate-z: 0;
+  --translate-x: 0;
+  --translate-y: 0;
+  --translate-z: 0;
 }
 .three-d, .three-d > *:not(.three-d) {
   --g: 0;
@@ -28,50 +48,18 @@
   --k: 0;
   --l: 0;
   --m: 0;
-  /*
-    Many thanks to the author of this gist for the trig functions:
-    https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
-  */
-  --n: calc(var(--g) * 3.1415926536 / 180);
-  --o: calc(var(--n) * var(--n));
-  --p: calc(var(--o) * var(--n));
-  --q: calc(var(--p) * var(--n));
-  --r: calc(var(--q) * var(--n));
-  --s: calc(var(--r) * var(--n));
-  --t: calc(var(--s) * var(--n));
-  --u: calc(var(--t) * var(--n));
-  --v: calc(var(--u) * var(--n));
-  --w: 1;
-  --x: calc(var(--o) / 2);
-  --aa: calc(var(--q) / 24);
-  --ab: calc(var(--s) / 720);
-  --ac: calc(var(--u) / 40320);
-  --ad: var(--n);
-  --ae: calc(var(--p) / 6);
-  --af: calc(var(--r) / 120);
-  --ag: calc(var(--t) / 5040);
-  --ah: calc(var(--v) / 362880);
-  --ai: calc(var(--w) - var(--x) + var(--aa) - var(--ab) + var(--ac));
-  --aj: calc(var(--ad) - var(--ae) + var(--af) - var(--ag) + var(--ah));
-  --ak: calc(var(--aj) / var(--ai));
+  --n: 0;
+  --o: 0;
 }
 
 .three-d {
   /*
-    All 3D classes get their width and height from the --al and
-    --am CSS variables.
+    All 3D classes get their width and height from the --p and
+    --q CSS variables.
   */
-  width: var(--width);
-  height: var(--height);
-}
-.three-d > *:not(.three-d) {
-  /*
-    Direct descendants which are not 3D objects inherit the --al
-    and --am CSS variable values from their parent
-  */
-  --width: inherit;
-  --height: inherit;
-  --depth: inherit;
+  width: calc(var(--width)*var(--unit));
+  height: calc(var(--height)*var(--unit));
+  clip-path: none !important;
 }
 .three-d, .three-d > * {
   /*
@@ -91,12 +79,53 @@
   width: inherit;
   height: inherit;
 }
-.three-d, .three-d:not(.space) > * {
+.three-d > *:not(.three-d) {
+  background: var(--background, none);
+}
+.three-d:not(.space), .three-d:not(.space) > * {
   /*
     Applies the transforms to position the faces to create the shapes.
 
   */
-  transform: rotateX(var(--a)) rotateY(var(--b)) rotateZ(var(--c)) translate3d(var(--k), var(--l), var(--m)) rotateX(var(--h)) rotateY(var(--i)) rotateZ(var(--j)) translate3d(var(--d), var(--e), var(--f));
+  --r:
+    rotateX(var(--a))
+    rotateY(var(--b))
+    rotateZ(var(--c))
+    translate3d(
+      /* The 1st two aren't used anywhere, so commenting for performance */
+      0, /* calc(var(--m)*var(--unit)), */
+      0, /* calc(var(--n)*var(--unit)), */
+      calc(var(--o)*var(--unit))
+    );
+  --s:
+    rotateX(var(--j))
+    rotateY(var(--k))
+    /* This one isn't used anywhere, commenting for performance */
+    /* rotateZ(var(--l)) */
+    translate3d(
+      calc(var(--d)*var(--unit)),
+      calc(var(--e)*var(--unit)),
+      calc(var(--f)*var(--unit))
+    );
+  --t:
+    rotateX(var(--rotate-x, 0))
+    rotateY(var(--rotate-y, 0))
+    rotateZ(var(--rotate-z, 0))
+    translate3d(
+      calc(var(--translate-x, 0)*var(--unit)),
+      calc(var(--translate-y, 0)*var(--unit)),
+      calc(var(--translate-z, 0)*var(--unit))
+    );
+  --u: var(--r) var(--s) var(--t);
+  transform: var(--u);
+}
+.three-d:not(.space):not(.compound) .three-d:not(.space) {
+  /*
+    Compound (nested) objects should automatically sit on the face
+    on which they are placed.
+  */
+  --rotate-x: 90deg;
+  --translate-y: calc(var(--height)/2);
 }
 .three-d.space {
   /*
@@ -125,25 +154,18 @@
   */
   overflow: hidden;
 }
-.three-d.space.reflective {
+.three-d.space.reflective, .three-d:not(.space).reflective > * {
   /*
     A reflective space has a reflection underneath it. Note that this
     feature currently only supports Webkit browsers.
   */
-  -webkit-box-reflect: below 0 var(--an);
+  -webkit-box-reflect: below 0 var(--reflection);
 }
 .three-d.object {
   /*
 
     Currently, only 2 faces (a card), 4 faces (a tetrahedron), and 6 faces
     (a cuboid) are supported. Hopefully more will be added soon.
-  */
-  /*
-    top, right, bottom, left is the css standard
-    so for planes, I recommend front, top, right, back, bottom, left
-
-    BUT, IF I MAKE IT top, front, right, back, left, bottom
-    then it's all a little easier (shorter), no?
   */
 }
 .three-d.object > *:nth-child(2):nth-last-child(1) {
@@ -154,14 +176,16 @@
   --b: 180deg;
 }
 .three-d.object > *:first-child:nth-last-child(4), .three-d.object > *:first-child:nth-last-child(4) ~ * {
-  --g: 60;
+  --g: 1.05;
   /* only regular tetrahedrons are supported currently */
   --height: var(--width) !important;
   --depth: var(--width) !important;
-  --ao: calc(var(--height) * var(--aj));
-  height: var(--ao);
+  --v: calc(var(--height)*var(--w));
+  height: calc(var(--v)*var(--unit));
   clip-path: polygon(50% 0, 0 100%, 100% 100%);
   transform-origin: 0 0;
+  padding-top: calc((var(--q) - var(--v))*var(--unit));
+  box-sizing: border-box;
 }
 .three-d.object > *:nth-child(1):nth-last-child(4) {
   /* The 1st face */
@@ -170,53 +194,100 @@
 .three-d.object > *:nth-child(2):nth-last-child(3) {
   /* The 2nd face */
   transform-origin: 50% 0;
-  --h: 19.5deg;
+  --j: 19.5deg;
   --b: 120deg;
 }
 .three-d.object > *:nth-child(3):nth-last-child(2) {
   /* The 3rd face */
   transform-origin: 50% 0;
-  --h: 19.5deg;
+  --j: 19.5deg;
   --b: -120deg;
 }
-.three-d.object > *:nth-child(4):nth-last-child(1) {
+.three-d.object:not(.quirksmode) > *:nth-child(4):nth-last-child(1) {
   /* The 4th face */
-  --f: calc(0px - var(--ao) * 0.9426414911);
-  --e: calc(0px - 2 * var(--ao) * 0.3338068592);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  --f: calc(var(--v)*0.9426414911);
+  --e: calc(0 - var(--v)*0.3338068592);
+  --a: -90deg;
+}
+.three-d.object.quirksmode > *:nth-child(4):nth-last-child(1) {
+  /* The 4th face */
+  --f: calc(0 - var(--v)*0.9426414911);
+  --e: calc(0 - 2*var(--v)*0.3338068592);
   --a: 90deg;
 }
 .three-d.object > *:nth-child(1):nth-last-child(6) {
   /* The 1st face */
-  --f: calc(var(--depth) / 2);
+  height: calc(var(--depth)*var(--unit));
+  --f: calc(var(--height)/2);
+  --a: 90deg;
 }
 .three-d.object > *:nth-child(2):nth-last-child(5) {
   /* The 2nd face */
-  height: var(--depth);
-  --f: calc(var(--height) / 2);
-  --a: 90deg;
+  --f: calc(var(--depth)/2);
 }
 .three-d.object > *:nth-child(3):nth-last-child(4) {
   /* The 3rd face */
-  width: var(--depth);
-  --f: calc(var(--width) / 2);
+  width: calc(var(--depth)*var(--unit));
+  --f: calc(var(--width)/2);
   --b: 90deg;
 }
 .three-d.object > *:nth-child(4):nth-last-child(3) {
   /* The 4th face */
-  --f: calc(var(--depth) / 2);
+  --f: calc(var(--depth)/2);
   --b: 180deg;
 }
 .three-d.object > *:nth-child(5):nth-last-child(2) {
   /* The 5th face */
-  height: var(--depth);
-  --f: calc(var(--height) / 2);
-  --a: 270deg;
+  width: calc(var(--depth)*var(--unit));
+  --f: calc(var(--width)/2);
+  --b: 270deg;
 }
 .three-d.object > *:nth-child(6):nth-last-child(1) {
   /* The 6th face */
-  width: var(--depth);
-  --f: calc(var(--width) / 2);
-  --b: 270deg;
+  height: calc(var(--depth)*var(--unit));
+  --f: calc(var(--height)/2);
+  --a: 270deg;
+}
+.three-d.cone {
+  /*
+    Cones (experimental)
+  */
+}
+.three-d.cone > * {
+  /* Sorry, not supporting a non-square depth until CSS has sine/cosine funcs */
+  --depth: var(--width) !important;
+  --g: calc(6.28/(var(--x) - 1)/2);
+  --aa: calc(var(--w)*var(--width));
+  --ab: calc(var(--ac)*(var(--width)/2));
+}
+.three-d.cone > *:not(:last-child) {
+  /*
+    The side faces of the cone. Each needs to be rotated to an
+    angle dependent on the total number of sides, and set to the
+    appropriate width so that the circumference of the cone
+    is correct to sit within the configured width/depth.
+  */
+  width: calc(var(--aa)*var(--unit));
+  transform-origin: 50% 100%;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+  --i: var(--height);
+  --h: var(--ab);
+  --ad: calc(1deg*(360/(var(--x) - 1)));
+  --b: calc(var(--ad)*(var(--ae) - 1));
+  --j:calc(1rad*var(--af));
+  --o: var(--ab);
+}
+.three-d.cone > *:last-child {
+  /*
+    This is the top face, which just needs to be clipped according to
+    the number of side faces, rotated to 120 degress and moved to the
+    bottom of the cone.
+  */
+  height: calc(var(--depth)*var(--unit));
+  clip-path: polygon(var(--ag));
+  --f: calc(var(--height)/2);
+  --a: 270deg;
 }
 .three-d.cylinder {
   /*
@@ -227,9 +298,9 @@
 .three-d.cylinder > * {
   /* Sorry, not supporting a non-square depth until CSS has sine/cosine funcs */
   --depth: var(--width) !important;
-  --g: calc(360 / (var(--ap) - 2) / 2);
-  --aq: calc(var(--aj) * var(--width));
-  --ar: calc((var(--aq) / 2) / var(--ak));
+  --g: calc(6.28/(var(--x) - 2)/2);
+  --aa: calc(var(--w)*var(--width));
+  --ab: calc(var(--ac)*(var(--width)/2));
 }
 .three-d.cylinder > *:first-child {
   /*
@@ -237,9 +308,10 @@
     the number of side faces, rotated to 90 degress and moved to the
     top of the cylinder.
   */
-  height: var(--depth);
-  clip-path: var(--as);
-  --f: calc(var(--height) / 2);
+  align-self: flex-start;
+  height: calc(var(--depth)*var(--unit));
+  clip-path: polygon(var(--ah));
+  --f: calc(var(--width)/2);
   --a: 90deg;
 }
 .three-d.cylinder > *:not(:first-child):not(:last-child) {
@@ -249,10 +321,10 @@
     appropriate width so that the circumference of the cylinder
     is correct to sit within the configured width/depth.
   */
-  width: var(--aq);
-  --at: calc(1deg * (var(--g) * 2));
-  --i: calc(var(--at) * (var(--au) - 2));
-  --f: var(--ar);
+  width: calc(var(--aa)*var(--unit));
+  --ad: calc(1rad*(var(--g)*2));
+  --k: calc(var(--ad)*(var(--ae) - 2));
+  --f: var(--ab);
 }
 .three-d.cylinder > *:last-child {
   /*
@@ -260,10 +332,15 @@
     to the top, except the clip path *may* need to be inverted because
     this face is rotated by 270deg rather than 90deg so it faces outward.
   */
-  height: var(--depth);
-  clip-path: var(--av, var(--as));
-  --f: calc(var(--height) / 2);
+  align-self: flex-end;
+  height: calc(var(--depth)*var(--unit));
+  clip-path: polygon(var(--ai, var(--ah)));
+  --f: calc(var(--width)/2);
   --a: 270deg;
+}
+.three-d.cylinder.wrapped > *:not(:first-child):not(:last-child) {
+  background-size: cover;
+  background-position-x: calc(var(--aa)*(1 - var(--ae))*var(--aj));
 }
 .three-d.carousel {
   /*
@@ -272,13 +349,13 @@
   */
 }
 .three-d.carousel > * {
-  width: var(--aq);
-  --g: calc(360 / var(--ap) / 2);
-  --ar: calc((var(--aq) / 2) / var(--ak));
-  --at: calc(1deg * (var(--g) * 2));
-  --aq: calc(var(--aj) * var(--width));
-  --i: calc(var(--at) * (var(--au) - 1));
-  --f: var(--ar);
+  width: calc(var(--aa)*var(--unit));
+  --g: calc(6.28/var(--x)/2);
+  --ab: calc(var(--ac)*(var(--width)/2));
+  --ad: calc(1rad*(var(--g)*2));
+  --aa: calc(var(--w)*var(--width));
+  --k: calc(var(--ad)*(var(--ae) - 1));
+  --f: var(--ab);
 }
 .three-d.carousel.wrapped > * {
   /*
@@ -287,7 +364,7 @@
     the carousel.
   */
   background-size: cover;
-  background-position-x: calc(var(--aq) * (1 - var(--au)));
+  background-position-x: calc(var(--aa)*(1 - var(--ae))*var(--aj));
 }
 .three-d.wheel {
   /*
@@ -296,13 +373,13 @@
   */
 }
 .three-d.wheel > * {
-  height: var(--ao);
-  --g: calc(360 / var(--ap) / 2);
-  --ar: calc((var(--ao) / 2) / var(--ak));
-  --at: calc(1deg * (var(--g) * 2));
-  --ao: calc(var(--aj) * var(--height));
-  --a: calc(var(--at) * (var(--au) - 1));
-  --f: var(--ar);
+  height: calc(var(--v)*var(--unit));
+  --g: calc(6.28/var(--x)/2);
+  --ab: calc(var(--ac)*(var(--height)/2));
+  --ad: calc(1rad*(var(--g)*2));
+  --v: calc(var(--w)*var(--height));
+  --a: calc(var(--ad)*(var(--ae) - 1));
+  --f: var(--ab);
 }
 .three-d.wheel.wrapped > * {
   /*
@@ -311,28 +388,28 @@
     the wheel.
   */
   background-size: cover;
-  background-position-y: calc(var(--ao) * (1 - var(--au)));
+  background-position-y: calc(var(--v)*(1 - var(--ae))*var(--aj));
 }
 .three-d.rotating {
-  --aw: 1;
-  --ax: 1;
-  --aba: 1;
-  --abb: 0deg;
-  --abc: 360deg;
+  --ak: 1;
+  --al: 1;
+  --am: 1;
+  --an: 0deg;
+  --ao: 360deg;
   animation: rotating 10s linear infinite;
 }
 .three-d.spinning {
-  --aw: 0;
-  --aba: 0;
-  --abb: 360deg;
-  --abc: 0deg;
+  --ak: 0;
+  --am: 0;
+  --an: 360deg;
+  --ao: 0deg;
   animation: rotating 10s linear infinite;
 }
 .three-d.rolling {
-  --ax: 0;
-  --aba: 0;
-  --abb: 360deg;
-  --abc: 0deg;
+  --al: 0;
+  --am: 0;
+  --an: 360deg;
+  --ao: 0deg;
   animation: rotating 10s linear infinite;
 }
 .three-d.extra.slowly {
@@ -347,39 +424,27 @@
 .three-d.extra.quickly {
   animation-duration: 2s;
 }
+.three-d.sample > *:not(.three-d):nth-child(3n+1) {
+  background: #0000ffbf;
+}
+.three-d.sample > *:not(.three-d):nth-child(3n+2) {
+  background: #00ff00bf;
+}
+.three-d.sample > *:not(.three-d):nth-child(3n) {
+  background: #ff00ffbf;
+}
+.three-d.unclipped > * {
+  clip-path: none !important;
+}
 .three-d.no-backface > * {
   /*
     A shortcut class to hide the back faces.
   */
   backface-visibility: hidden;
 }
-.three-d.shaded.object > * {
-  /*
-    The shaded class implements some very rudimentory shading. This
-    only works for objects which do not move, and currently only 6
-    sided shapes are supported (i.e cuboids).
-  */
-  filter: brightness(var(--abd, 1));
-}
-.three-d.shaded.object > *:nth-child(2) {
-  --abd: 1.2;
-  /* top */
-}
-.three-d.shaded.object > *:nth-child(3) {
-  --abd: 0.9;
-  /* right */
-}
-.three-d.shaded.object > *:nth-child(4) {
-  --abd: 0.8;
-  /* back */
-}
-.three-d.shaded.object > *:nth-child(5) {
-  --abd: 1.1;
-  /* left */
-}
-.three-d.shaded.object > *:nth-child(6) {
-  --abd: 0.8;
-  /* bottom */
+.three-d.shaded > * {
+  --ap: calc((var(--ae) / var(--x))*1.15 - 0.575);
+  filter: brightness(calc(0.75 + (var(--ap) * var(--ap))));
 }
 .three-d.seated.object {
   /*
@@ -395,137 +460,212 @@
 }
 
 .three-d > * {
-  --au: 0;
-  --ap: 0;
+  --ae: 0;
+  --x: 0;
 }
 .three-d > *:nth-child(1) {
-  --au: 1;
+  --index: 0;
+  --ae: 1;
 }
 .three-d > *:first-child:nth-last-child(1), .three-d > *:first-child:nth-last-child(1) ~ * {
-  --ap: 1;
+  --x: 1;
 }
 .three-d > *:nth-child(2) {
-  --au: 2;
+  --index: 1;
+  --ae: 2;
 }
 .three-d > *:first-child:nth-last-child(2), .three-d > *:first-child:nth-last-child(2) ~ * {
-  --ap: 2;
+  --x: 2;
 }
 .three-d > *:nth-child(3) {
-  --au: 3;
+  --index: 2;
+  --ae: 3;
 }
 .three-d > *:first-child:nth-last-child(3), .three-d > *:first-child:nth-last-child(3) ~ * {
-  --ap: 3;
+  --x: 3;
+  --ah: var(--aq);
+  --ag: var(--ar);
+  --ai: var(--as);
 }
 .three-d > *:nth-child(4) {
-  --au: 4;
+  --index: 3;
+  --ae: 4;
 }
 .three-d > *:first-child:nth-last-child(4), .three-d > *:first-child:nth-last-child(4) ~ * {
-  --ap: 4;
+  --x: 4;
+  --ah: var(--ar);
+  --ag: var(--at);
 }
 .three-d > *:nth-child(5) {
-  --au: 5;
+  --index: 4;
+  --ae: 5;
 }
 .three-d > *:first-child:nth-last-child(5), .three-d > *:first-child:nth-last-child(5) ~ * {
-  --ap: 5;
-  --as: polygon(50% 0%, 93.3% 75%, 6.7% 75%);
-  --av: polygon(50% 100%, 93.3% 25%, 6.7% 25%);
+  --x: 5;
+  --ah: var(--au);
+  --ag: var(--av);
+  --ai: var(--at);
 }
 .three-d > *:nth-child(6) {
-  --au: 6;
+  --index: 5;
+  --ae: 6;
 }
 .three-d > *:first-child:nth-last-child(6), .three-d > *:first-child:nth-last-child(6) ~ * {
-  --ap: 6;
-  --as: polygon(85.36% 14.64%, 85.36% 85.36%, 14.64% 85.36%, 14.64% 14.64%);
+  --x: 6;
+  --ah: var(--av);
+  --ag: var(--aw);
 }
 .three-d > *:nth-child(7) {
-  --au: 7;
+  --index: 6;
+  --ae: 7;
 }
 .three-d > *:first-child:nth-last-child(7), .three-d > *:first-child:nth-last-child(7) ~ * {
-  --ap: 7;
-  --as: polygon(50% 0%, 97.55% 34.55%, 79.39% 90.45%, 20.61% 90.45%, 2.45% 34.55%);
-  --av: polygon(50% 100%, 97.55% 65.45%, 79.39% 9.55%, 20.61% 9.55%, 2.45% 65.45%);
+  --x: 7;
+  --ah: var(--ax);
+  --ag: var(--aba);
+  --ai: var(--aw);
 }
 .three-d > *:nth-child(8) {
-  --au: 8;
+  --index: 7;
+  --ae: 8;
 }
 .three-d > *:first-child:nth-last-child(8), .three-d > *:first-child:nth-last-child(8) ~ * {
-  --ap: 8;
-  --as: polygon(75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%, 25% 6.7%);
+  --x: 8;
+  --ah: var(--aba);
+  --ag: var(--abb);
 }
 .three-d > *:nth-child(9) {
-  --au: 9;
+  --index: 8;
+  --ae: 9;
 }
 .three-d > *:first-child:nth-last-child(9), .three-d > *:first-child:nth-last-child(9) ~ * {
-  --ap: 9;
-  --as: polygon(50% 0%, 89.09% 18.83%, 98.75% 61.13%, 71.69% 95.05%, 28.31% 95.05%, 1.25% 61.13%, 10.91% 18.83%);
-  --av: polygon(50% 100%, 89.09% 81.17%, 98.75% 38.87%, 71.69% 4.95%, 28.31% 4.95%, 1.25% 38.87%, 10.91% 81.17%);
+  --x: 9;
+  --ah: var(--abc);
+  --ag: var(--abd);
+  --ai: var(--abb);
 }
 .three-d > *:nth-child(10) {
-  --au: 10;
+  --index: 9;
+  --ae: 10;
 }
 .three-d > *:first-child:nth-last-child(10), .three-d > *:first-child:nth-last-child(10) ~ * {
-  --ap: 10;
-  --as: polygon(69.13% 3.81%, 96.19% 30.87%, 96.19% 69.13%, 69.13% 96.19%, 30.87% 96.19%, 3.81% 69.13%, 3.81% 30.87%, 30.87% 3.81%);
+  --x: 10;
+  --ah: var(--abd);
+  --ag: var(--abe);
 }
 .three-d > *:nth-child(11) {
-  --au: 11;
+  --index: 10;
+  --ae: 11;
 }
 .three-d > *:first-child:nth-last-child(11), .three-d > *:first-child:nth-last-child(11) ~ * {
-  --ap: 11;
-  --as: polygon(50% 0%, 82.14% 11.7%, 99.24% 41.32%, 93.3% 75%, 67.1% 96.98%, 32.9% 96.98%, 6.7% 75%, 0.76% 41.32%, 17.86% 11.7%);
-  --av: polygon(50% 100%, 82.14% 88.3%, 99.24% 58.68%, 93.3% 25%, 67.1% 3.02%, 32.9% 3.02%, 6.7% 25%, 0.76% 58.68%, 17.86% 88.3%);
+  --x: 11;
+  --ah: var(--abf);
+  --ag: var(--abg);
+  --ai: var(--abe);
 }
 .three-d > *:nth-child(12) {
-  --au: 12;
+  --index: 11;
+  --ae: 12;
 }
 .three-d > *:first-child:nth-last-child(12), .three-d > *:first-child:nth-last-child(12) ~ * {
-  --ap: 12;
-  --as: polygon(65.45% 2.45%, 90.45% 20.61%, 100% 50%, 90.45% 79.39%, 65.45% 97.55%, 34.55% 97.55%, 9.55% 79.39%, 0% 50%, 9.55% 20.61%, 34.55% 2.45%);
+  --x: 12;
+  --ah: var(--abg);
+  --ag: var(--abh);
 }
 .three-d > *:nth-child(13) {
-  --au: 13;
+  --index: 12;
+  --ae: 13;
 }
 .three-d > *:first-child:nth-last-child(13), .three-d > *:first-child:nth-last-child(13) ~ * {
-  --ap: 13;
-  --as: polygon(50% 0%, 77.03% 7.94%, 95.48% 29.23%, 99.49% 57.12%, 87.79% 82.74%, 64.09% 97.97%, 35.91% 97.97%, 12.21% 82.74%, 0.51% 57.12%, 4.52% 29.23%, 22.97% 7.94%);
-  --av: polygon(50% 100%, 77.03% 92.06%, 95.48% 70.77%, 99.49% 42.88%, 87.79% 17.26%, 64.09% 2.03%, 35.91% 2.03%, 12.21% 17.26%, 0.51% 42.88%, 4.52% 70.77%, 22.97% 92.06%);
+  --x: 13;
+  --ah: var(--abi);
+  --ag: var(--abj);
+  --ai: var(--abh);
 }
 .three-d > *:nth-child(14) {
-  --au: 14;
+  --index: 13;
+  --ae: 14;
 }
 .three-d > *:first-child:nth-last-child(14), .three-d > *:first-child:nth-last-child(14) ~ * {
-  --ap: 14;
-  --as: polygon(62.94% 1.7%, 85.36% 14.64%, 98.3% 37.06%, 98.3% 62.94%, 85.36% 85.36%, 62.94% 98.3%, 37.06% 98.3%, 14.64% 85.36%, 1.7% 62.94%, 1.7% 37.06%, 14.64% 14.64%, 37.06% 1.7%);
+  --x: 14;
+  --ah: var(--abj);
+  --ag: var(--abk);
 }
 .three-d > *:nth-child(15) {
-  --au: 15;
+  --index: 14;
+  --ae: 15;
 }
 .three-d > *:first-child:nth-last-child(15), .three-d > *:first-child:nth-last-child(15) ~ * {
-  --ap: 15;
-  --as: polygon(50% 0%, 73.24% 5.73%, 91.15% 21.6%, 99.64% 43.97%, 96.75% 67.73%, 83.16% 87.43%, 61.97% 98.55%, 38.03% 98.55%, 16.84% 87.43%, 3.25% 67.73%, 0.36% 43.97%, 8.85% 21.6%, 26.76% 5.73%);
-  --av: polygon(50% 100%, 73.24% 94.27%, 91.15% 78.4%, 99.64% 56.03%, 96.75% 32.27%, 83.16% 12.57%, 61.97% 1.45%, 38.03% 1.45%, 16.84% 12.57%, 3.25% 32.27%, 0.36% 56.03%, 8.85% 78.4%, 26.76% 94.27%);
+  --x: 15;
+  --ah: var(--abl);
+  --ag: var(--abm);
+  --ai: var(--abk);
 }
 .three-d > *:nth-child(16) {
-  --au: 16;
+  --index: 15;
+  --ae: 16;
 }
 .three-d > *:first-child:nth-last-child(16), .three-d > *:first-child:nth-last-child(16) ~ * {
-  --ap: 16;
-  --as: polygon(61.13% 1.25%, 81.17% 10.91%, 95.05% 28.31%, 100% 50%, 95.05% 71.69%, 81.17% 89.09%, 61.13% 98.75%, 38.87% 98.75%, 18.83% 89.09%, 4.95% 71.69%, 0% 50%, 4.95% 28.31%, 18.83% 10.91%, 38.87% 1.25%);
+  --x: 16;
+  --ah: var(--abm);
+  --ag: var(--abn);
 }
 .three-d > *:nth-child(17) {
-  --au: 17;
+  --index: 16;
+  --ae: 17;
 }
 .three-d > *:first-child:nth-last-child(17), .three-d > *:first-child:nth-last-child(17) ~ * {
-  --ap: 17;
-  --as: polygon(50% 0%, 70.34% 4.32%, 87.16% 16.54%, 97.55% 34.55%, 99.73% 55.23%, 93.3% 75%, 79.39% 90.45%, 60.4% 98.91%, 39.6% 98.91%, 20.61% 90.45%, 6.7% 75%, 0.27% 55.23%, 2.45% 34.55%, 12.84% 16.54%, 29.66% 4.32%);
-  --av: polygon(50% 100%, 70.34% 95.68%, 87.16% 83.46%, 97.55% 65.45%, 99.73% 44.77%, 93.3% 25%, 79.39% 9.55%, 60.4% 1.09%, 39.6% 1.09%, 20.61% 9.55%, 6.7% 25%, 0.27% 44.77%, 2.45% 65.45%, 12.84% 83.46%, 29.66% 95.68%);
+  --x: 17;
+  --ah: var(--abo);
+  --ag: var(--abp);
+  --ai: var(--abn);
 }
 .three-d > *:nth-child(18) {
-  --au: 18;
+  --index: 17;
+  --ae: 18;
 }
 .three-d > *:first-child:nth-last-child(18), .three-d > *:first-child:nth-last-child(18) ~ * {
-  --ap: 18;
-  --as: polygon(59.75% 0.96%, 77.78% 8.43%, 91.57% 22.22%, 99.04% 40.25%, 99.04% 59.75%, 91.57% 77.78%, 77.78% 91.57%, 59.75% 99.04%, 40.25% 99.04%, 22.22% 91.57%, 8.43% 77.78%, 0.96% 59.75%, 0.96% 40.25%, 8.43% 22.22%, 22.22% 8.43%, 40.25% 0.96%);
+  --x: 18;
+  --ah: var(--abp);
+  --ag: var(--abq);
+}
+
+.three-d.object > *:first-child:nth-last-child(4), .three-d.object > *:first-child:nth-last-child(4) ~ *, .three-d.cone > *, .three-d.cylinder > *, .three-d.carousel > *, .three-d.wheel > * {
+  /*
+    Many thanks to the author of this gist for the trig functions:
+    https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
+  */
+  --abr: calc(var(--g)*var(--g));
+  --abs: calc(var(--abr)*var(--g));
+  --abt: calc(var(--abs)*var(--g));
+  --abu: calc(var(--abt)*var(--g));
+  --abv: calc(var(--abu)*var(--g));
+  --abw: calc(var(--abv)*var(--g));
+  --abx: calc(var(--abw)*var(--g));
+  --abca: calc(var(--abx)*var(--g));
+  --abcb: calc(var(--abr)/2);
+  --abcc: calc(var(--abt)/24);
+  --abcd: calc(var(--abv)/720);
+  --abce: calc(var(--abx)/40320);
+  --abcf: calc(var(--abs)/6);
+  --abcg: calc(var(--abu)/120);
+  --abch: calc(var(--abw)/5040);
+  --abci: calc(var(--abca)/362880);
+  --ac: calc(1 - var(--abcb) + var(--abcc) - var(--abcd) + var(--abce));
+  --w: calc(var(--g) - var(--abcf) + var(--abcg) - var(--abch) + var(--abci));
+}
+
+.three-d.cone > *:not(:last-child) {
+  --abcj: calc(var(--h)/var(--i));
+  --abck: calc(var(--abcj)*var(--abcj)*var(--abcj));
+  --abcl: calc(var(--abck)*var(--abcj)*var(--abcj));
+  --abcm: calc(var(--abcl)*var(--abcj)*var(--abcj));
+  --abcn: calc(var(--abcm)*var(--abcj)*var(--abcj));
+  --abco: calc(0.1666666667*var(--abck));
+  --abcp: calc(0.075*var(--abcl));
+  --abcq: calc(0.0446428571*var(--abcm));
+  --abcr: calc(0.0303819444*var(--abcn));
+  --af: calc(var(--abcj) + var(--abco) + var(--abcp) + var(--abcq) + var(--abcr));
 }
 
 figure.three-d {
@@ -541,14 +681,40 @@ figure.three-d {
 
 @keyframes rotating {
   from {
-    transform: rotate3d(var(--aw, 1), var(--ax, 1), var(--aba, 1), var(--abb, 0deg));
+    transform: var(--u) rotate3d(var(--ak, 1), var(--al, 1), var(--am, 1), var(--an, 0deg));
   }
   to {
-    transform: rotate3d(var(--aw, 1), var(--ax, 1), var(--aba, 1), var(--abc, 360deg));
+    transform: var(--u) rotate3d(var(--ak, 1), var(--al, 1), var(--am, 1), var(--ao, 360deg));
   }
 }
 :root {
-  --an: url("data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjIxMG1tIiBoZWlnaHQ9IjI5N21tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMTAgMjk3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4NCjxkZWZzPg0KPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMTA3LjY3IiB4Mj0iMTA3LjQ1IiB5MT0iMzkzLjc0IiB5Mj0iMTQ0LjM4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEuMzYxMiAwIDAgMSAtMzkuMjQ1IDApIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQo8c3RvcCBzdG9wLWNvbG9yPSIjMDYwMDAwIiBvZmZzZXQ9IjAiLz4NCjxzdG9wIHN0b3AtY29sb3I9IiMwNjAwMDAiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxIi8+DQo8L2xpbmVhckdyYWRpZW50Pg0KPC9kZWZzPg0KPG1ldGFkYXRhPg0KPHJkZjpSREY+DQo8Y2M6V29yayByZGY6YWJvdXQ9IiI+DQo8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4NCjxkYzp0eXBlIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiLz4NCjxkYzp0aXRsZS8+DQo8L2NjOldvcms+DQo8L3JkZjpSREY+DQo8L21ldGFkYXRhPg0KPHJlY3QgeD0iLS4zMjUxOSIgeT0iMS4wNDA5IiB3aWR0aD0iMjEwLjM5IiBoZWlnaHQ9IjI5Ni42OSIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2Utd2lkdGg9Ii4zMDg2OCIvPg0KPC9zdmc+");
+  --unit: 1px;
+  --ar: 100% 50%, 0% 50%;
+  --au: 50% 0%, 93.3% 75%, 6.7% 75%;
+  --at: 50% 100%, 93.3% 25%, 6.7% 25%;
+  --av: 85.36% 14.64%, 85.36% 85.36%, 14.64% 85.36%, 14.64% 14.64%;
+  --ax: 50% 0%, 97.55% 34.55%, 79.39% 90.45%, 20.61% 90.45%, 2.45% 34.55%;
+  --aw: 50% 100%, 97.55% 65.45%, 79.39% 9.55%, 20.61% 9.55%, 2.45% 65.45%;
+  --aba: 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%, 25% 6.7%;
+  --abc: 50% 0%, 89.09% 18.83%, 98.75% 61.13%, 71.69% 95.05%, 28.31% 95.05%, 1.25% 61.13%, 10.91% 18.83%;
+  --abb: 50% 100%, 89.09% 81.17%, 98.75% 38.87%, 71.69% 4.95%, 28.31% 4.95%, 1.25% 38.87%, 10.91% 81.17%;
+  --abd: 69.13% 3.81%, 96.19% 30.87%, 96.19% 69.13%, 69.13% 96.19%, 30.87% 96.19%, 3.81% 69.13%, 3.81% 30.87%, 30.87% 3.81%;
+  --abf: 50% 0%, 82.14% 11.7%, 99.24% 41.32%, 93.3% 75%, 67.1% 96.98%, 32.9% 96.98%, 6.7% 75%, 0.76% 41.32%, 17.86% 11.7%;
+  --abe: 50% 100%, 82.14% 88.3%, 99.24% 58.68%, 93.3% 25%, 67.1% 3.02%, 32.9% 3.02%, 6.7% 25%, 0.76% 58.68%, 17.86% 88.3%;
+  --abg: 65.45% 2.45%, 90.45% 20.61%, 100% 50%, 90.45% 79.39%, 65.45% 97.55%, 34.55% 97.55%, 9.55% 79.39%, 0% 50%, 9.55% 20.61%, 34.55% 2.45%;
+  --abi: 50% 0%, 77.03% 7.94%, 95.48% 29.23%, 99.49% 57.12%, 87.79% 82.74%, 64.09% 97.97%, 35.91% 97.97%, 12.21% 82.74%, 0.51% 57.12%, 4.52% 29.23%, 22.97% 7.94%;
+  --abh: 50% 100%, 77.03% 92.06%, 95.48% 70.77%, 99.49% 42.88%, 87.79% 17.26%, 64.09% 2.03%, 35.91% 2.03%, 12.21% 17.26%, 0.51% 42.88%, 4.52% 70.77%, 22.97% 92.06%;
+  --abj: 62.94% 1.7%, 85.36% 14.64%, 98.3% 37.06%, 98.3% 62.94%, 85.36% 85.36%, 62.94% 98.3%, 37.06% 98.3%, 14.64% 85.36%, 1.7% 62.94%, 1.7% 37.06%, 14.64% 14.64%, 37.06% 1.7%;
+  --abl: 50% 0%, 73.24% 5.73%, 91.15% 21.6%, 99.64% 43.97%, 96.75% 67.73%, 83.16% 87.43%, 61.97% 98.55%, 38.03% 98.55%, 16.84% 87.43%, 3.25% 67.73%, 0.36% 43.97%, 8.85% 21.6%, 26.76% 5.73%;
+  --abk: 50% 100%, 73.24% 94.27%, 91.15% 78.4%, 99.64% 56.03%, 96.75% 32.27%, 83.16% 12.57%, 61.97% 1.45%, 38.03% 1.45%, 16.84% 12.57%, 3.25% 32.27%, 0.36% 56.03%, 8.85% 78.4%, 26.76% 94.27%;
+  --abm: 61.13% 1.25%, 81.17% 10.91%, 95.05% 28.31%, 100% 50%, 95.05% 71.69%, 81.17% 89.09%, 61.13% 98.75%, 38.87% 98.75%, 18.83% 89.09%, 4.95% 71.69%, 0% 50%, 4.95% 28.31%, 18.83% 10.91%, 38.87% 1.25%;
+  --abo: 50% 0%, 70.34% 4.32%, 87.16% 16.54%, 97.55% 34.55%, 99.73% 55.23%, 93.3% 75%, 79.39% 90.45%, 60.4% 98.91%, 39.6% 98.91%, 20.61% 90.45%, 6.7% 75%, 0.27% 55.23%, 2.45% 34.55%, 12.84% 16.54%, 29.66% 4.32%;
+  --abn: 50% 100%, 70.34% 95.68%, 87.16% 83.46%, 97.55% 65.45%, 99.73% 44.77%, 93.3% 25%, 79.39% 9.55%, 60.4% 1.09%, 39.6% 1.09%, 20.61% 9.55%, 6.7% 25%, 0.27% 44.77%, 2.45% 65.45%, 12.84% 83.46%, 29.66% 95.68%;
+  --abp: 59.75% 0.96%, 77.78% 8.43%, 91.57% 22.22%, 99.04% 40.25%, 99.04% 59.75%, 91.57% 77.78%, 77.78% 91.57%, 59.75% 99.04%, 40.25% 99.04%, 22.22% 91.57%, 8.43% 77.78%, 0.96% 59.75%, 0.96% 40.25%, 8.43% 22.22%, 22.22% 8.43%, 40.25% 0.96%;
+  --abcs: 50% 0%, 68.06% 3.38%, 83.68% 13.05%, 94.76% 27.71%, 99.79% 45.39%, 98.09% 63.68%, 89.9% 80.13%, 76.32% 92.51%, 59.19% 99.15%, 40.81% 99.15%, 23.68% 92.51%, 10.1% 80.13%, 1.91% 63.68%, 0.21% 45.39%, 5.24% 27.71%, 16.32% 13.05%, 31.94% 3.38%;
+  --abq: 50% 100%, 68.06% 96.62%, 83.68% 86.95%, 94.76% 72.29%, 99.79% 54.61%, 98.09% 36.32%, 89.9% 19.87%, 76.32% 7.49%, 59.19% 0.85%, 40.81% 0.85%, 23.68% 7.49%, 10.1% 19.87%, 1.91% 36.32%, 0.21% 54.61%, 5.24% 72.29%, 16.32% 86.95%, 31.94% 96.62%;
+  --abct: 58.68% 0.76%, 75% 6.7%, 88.3% 17.86%, 96.98% 32.9%, 100% 50%, 96.98% 67.1%, 88.3% 82.14%, 75% 93.3%, 58.68% 99.24%, 41.32% 99.24%, 25% 93.3%, 11.7% 82.14%, 3.02% 67.1%, 0% 50%, 3.02% 32.9%, 11.7% 17.86%, 25% 6.7%, 41.32% 0.76%;
+  --reflection: url("data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjIxMG1tIiBoZWlnaHQ9IjI5N21tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMTAgMjk3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4NCjxkZWZzPg0KPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMTA3LjY3IiB4Mj0iMTA3LjQ1IiB5MT0iMzkzLjc0IiB5Mj0iMTQ0LjM4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEuMzYxMiAwIDAgMSAtMzkuMjQ1IDApIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQo8c3RvcCBzdG9wLWNvbG9yPSIjMDYwMDAwIiBvZmZzZXQ9IjAiLz4NCjxzdG9wIHN0b3AtY29sb3I9IiMwNjAwMDAiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxIi8+DQo8L2xpbmVhckdyYWRpZW50Pg0KPC9kZWZzPg0KPG1ldGFkYXRhPg0KPHJkZjpSREY+DQo8Y2M6V29yayByZGY6YWJvdXQ9IiI+DQo8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4NCjxkYzp0eXBlIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiLz4NCjxkYzp0aXRsZS8+DQo8L2NjOldvcms+DQo8L3JkZjpSREY+DQo8L21ldGFkYXRhPg0KPHJlY3QgeD0iLS4zMjUxOSIgeT0iMS4wNDA5IiB3aWR0aD0iMjEwLjM5IiBoZWlnaHQ9IjI5Ni42OSIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2Utd2lkdGg9Ii4zMDg2OCIvPg0KPC9zdmc+");
 }
 
 /*# sourceMappingURL=threedom.css.map */

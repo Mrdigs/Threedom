@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        color: white;
+      }
+      .space {
+        perspective-origin: 1000px;
+      }
+      .cylinder {
+        transition: height 15s ease;
+      }
+      .cylinder.striped > * {
+        background-image: repeating-linear-gradient( 45deg, #d8db7500, #d8db7500 10px, #00000020 10px, #00000020 20px );
+        background-position-y: calc(var(--index) * 8px);
+      }
+      .cylinder.glass > * {
+        background-image: radial-gradient(transparent 57% 35%, #ffffff6e);
+        border: 1px solid #ffffff99;
+        border-radius: 6px;
+      }
+      .cylinder.glowing > * {
+        filter: blur(6px);
+      }
+      .loaded .sleeve {
+        --height: 301 !important;
+      }
+    </style>
+    <script type="text/javascript">
+      window.onload = function() {
+        setTimeout(function() {
+          document.body.className += 'loaded';
+        }, 0);
+      };
+    </script>
+  </head>
+  <body>
+    <h1>3D CSS Progress Bars</h1>
+
+    <figure class="three-d space" style="justify-content: left;margin: 30px;">
+      <figure class="three-d compound object" style="transform:rotateZ(90deg);align-items:flex-end;">
+        <div>
+          <figure class="three-d shaded cylinder sleeve" style="--width:51;--height:0;--background:#7ed6be">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="three-d shaded cylinder" style="--rotate-y: 180deg;--width:50;--height:300;--background:#ecf081c4">
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space" style="justify-content: left;margin: 30px;margin-top: 60px;">
+      <figure class="three-d compound object" style="transform:rotateZ(90deg);align-items:flex-end;">
+        <div>
+          <figure class="three-d shaded cylinder sleeve" style="--width:50;--height:0;--background:#7ed6be">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="three-d shaded cylinder" style="--rotate-y: 180deg;--width:30;--height:300;--background:#ecf081">
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space" style="justify-content: left;margin: 30px;margin-top: 60px;">
+      <figure class="three-d compound object" style="transform:rotateZ(90deg);align-items:flex-end;">
+        <div>
+          <figure class="three-d shaded cylinder sleeve" style="--width:50;--height:0;--background:#7ed6be">
+              <div style="--background:transparent"></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="three-d shaded cylinder" style="--rotate-y: 180deg;--width:30;--height:300;--background:#ecf081">
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space" style="justify-content: left;margin: 30px;margin-top: 60px;">
+      <figure class="three-d compound object" style="transform:rotateZ(90deg);align-items:flex-end;">
+        <div>
+          <figure class="three-d shaded cylinder sleeve" style="--width:50;--height:0;--background:#7ed6be">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="three-d spinning striped cylinder" style="--rotate-y: 180deg;--width:45;--height:300;--background:#ecf081">
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space" style="justify-content: left;margin: 30px;margin-top: 60px;">
+      <figure class="three-d compound object" style="transform:rotateZ(90deg) rotateY(45deg);align-items:flex-end;">
+        <div>
+          <figure class="three-d glowing shaded cylinder sleeve" style="--width:45;--height:0;--background:#00ffb9">
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="three-d shaded glass cylinder" style="--rotate-y: 180deg;--width:50;--height:300;--background:#f9ffb630">
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+    <figure class="three-d space" style="justify-content: left;margin: 30px;margin-top: 60px;">
+      <figure class="three-d compound object" style="transform:rotateZ(90deg) rotateY(45deg);align-items:flex-end;">
+        <div>
+          <figure class="three-d shaded cylinder sleeve" style="--width:40;--height:0;--background:#ecf081">
+              <div></div><div></div><div></div><div></div><div></div><div></div>
+          </figure>
+        </div>
+        <div>
+          <figure class="three-d shaded cylinder" style="--rotate-y: 180deg;--width:50;--height:300;--background:#7ed6be">
+            <div></div><div style="background:transparent"></div><div></div>
+            <div></div><div style="background:transparent"></div><div></div>
+          </figure>
+        </div>
+      </figure>
+    </figure>
+
+  </body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="../dist/threedom.min.css?aa">
+    <style media="screen">
+      body {
+        background: black;
+        color: white;
+      }
+      #gallery {
+        transition: transform 0.8s;
+        margin-top: 50px;
+        margin-bottom: 50px;
+      }
+      #gallery p {
+        transition: opacity 0.8s;
+        background: #00000036;
+        font-size: 14px;
+        padding: 10px;
+        align-self: flex-end;
+        margin: 0;
+        opacity: 0;
+        position: absolute;
+        top: 100%;
+      }
+      #gallery > * {
+        opacity: 1;
+        background-size: cover;
+        transition: transform 0.8s, opacity 0.8s;
+      }
+      .silverscreen.carousel[data-turn='0'] > *:nth-child(1) p,
+      .silverscreen.carousel[data-turn='1'] > *:nth-child(3) p,
+      .silverscreen.carousel[data-turn='2'] > *:nth-child(5) p,
+      .silverscreen.carousel[data-turn='3'] > *:nth-child(7) p {
+        opacity: 1 !important;
+      }
+
+      .silverscreen.carousel[data-turn='0'] > *:nth-child(7),
+      .silverscreen.carousel[data-turn='1'] > *:nth-child(1),
+      .silverscreen.carousel[data-turn='2'] > *:nth-child(3),
+      .silverscreen.carousel[data-turn='3'] > *:nth-child(5) {
+        --rotate-y: 145deg;
+      }
+      .silverscreen.carousel[data-turn='0'] > *:nth-child(5),
+      .silverscreen.carousel[data-turn='1'] > *:nth-child(7),
+      .silverscreen.carousel[data-turn='2'] > *:nth-child(1),
+      .silverscreen.carousel[data-turn='3'] > *:nth-child(3) {
+        opacity: 0 !important;
+        --rotate-y: 90deg;
+      }
+      .silverscreen.carousel[data-turn='0'] > *:nth-child(3),
+      .silverscreen.carousel[data-turn='1'] > *:nth-child(5),
+      .silverscreen.carousel[data-turn='2'] > *:nth-child(7),
+      .silverscreen.carousel[data-turn='3'] > *:nth-child(1) {
+        --rotate-y: -145deg;
+      }
+    </style>
+    <script type="text/javascript">
+      var face = 1, counter = 0, slider, faces;
+      var gallery = [
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/tarzan-1_orig.jpg',
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/la-mujer_2_orig.jpg',
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/el-hombre-nuclear_orig.jpg',
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/invasion-2_orig.jpg',
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/la-casa_1_orig.jpg',
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/mazinger-z_orig.jpg',
+        'http://www.mi-television.com/uploads/1/0/3/0/103099212/documentales_3_orig.jpg'
+      ];
+      var text = [
+        'Tarzán: El protagonista de la película. Siendo un bebé, él y sus padres naufragaron en las costas de África, viéndose obligados a abandonar su barco subsistir en medio de la selva. Sin embargo los padres de Tarzán son devorados por un leopardo llamado Sabor, Tarzán es encontrado y criado por una manada de gorilas.',
+        'La Mujer Maravilla (en inglés: Wonder Woman) es una superheroína ficticia creada por William Moulton Marston para la editorial DC Comics. El personaje es una princesa guerrera de las Amazonas (basado en la raza de las amazonas de la mitología griega) y es conocida en su tierra natal como la princesa Diana de Temiscira.',
+        'The Six Million Dollar Man, conocida en Hispanoamérica como El hombre nuclear y en España como El hombre de los seis millones de dólares, es una serie de televisión norteamericana emitida entre 1973 y 1978, basada en la novela Cyborg de Martin Caidin.',
+        'Producida en los Estados Unidos y escrita y dirigida por Kenneth Johnson, V Invasión Extraterrestre narraba la historia de extraterrestres reptiloides (con apariencia humana) que llegan a la Tierra con la oculta intención de robar toda el agua del mundo y cosechar a la humanidad como fuente de alimento.',
+        'La familia Ingalls refleja la vida de una familia que vivía en un pueblo de colonos de Minnesota, en la década de 1870. La famosa serie fue filmada hace más de 40 años en los Estados Unidos y hasta el día de hoy siguen saliendo a la luz detalles desconocidos',
+        'La Historia de Mazinger Z, trata de un manga de Go Nagai y una serie anime de TV producida por Toei Animation. La trama principal trata sobre un grupo de científicos que crean el primer robot gigante tripulado, para luchar contra las fuerzas malignas del Dr. Infierno (o Dr. Hell).',
+        'DOCUMENTALES : Para disfrutar con toda la familia. Series totalmente educativas con temas como el universo, la tecnlogía, la naturaleza y mucho más.'
+      ];
+
+      document.addEventListener('DOMContentLoaded', function() {
+        slider = document.querySelector('#gallery');
+        faces = slider.querySelectorAll('div:nth-child(odd)');
+        for (var i = 0; i < 4; i++) {
+          faces[i].querySelector('p').innerText = text[i];
+          faces[i].style.setProperty('background-image', 'url(' + gallery[i] + ')');
+        }
+      });
+
+      function rotate() {
+        var slide = (Math.abs(counter) + 3) % gallery.length;
+        var backface = faces[((Math.abs(counter) + 2) % 4)];
+        backface.querySelector('p').innerText = text[slide];
+        backface.style.setProperty('background-image', 'url(' + gallery[slide] + ')');
+      }
+
+      function slide() {
+        rotate();
+        counter = parseInt(slider.dataset.face || 0) - 1;
+        slider.style.setProperty('--rotate-y', counter * 90 + 'deg');
+        slider.setAttribute('data-turn', Math.abs(counter % 4));
+        slider.dataset.face = counter;
+      }
+    </script>
+  </head>
+  <body>
+
+    <figure class="three-d space" style="width:600px;height:400px;margin:auto;perspective:800px;" onclick="slide()">
+      <div style="transform: translateZ(-100px);">
+        <figure id="gallery" data-turn="0" class="three-d reflective silverscreen carousel" style="--height:200;--width:800;--depth:800;">
+            <div><p></p></div>
+            <div><p></p></div>
+            <div><p></p></div>
+            <div><p></p></div>
+            <div><p></p></div>
+            <div><p></p></div>
+            <div><p></p></div>
+            <div><p></p></div>
+        </figure>
+      </div>
+    </figure>
+
+  </body>
+</html>

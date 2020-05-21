@@ -10,13 +10,13 @@
         font-size: 75px;
       }
       #carousel {
-        --width: 4em;
-        --height: 4em;
+        --width: 4;
+        --height: 4;
       }
       #carousel .object {
-        --width: 1em;
-        --height: 1em;
-        --depth: 1em;
+        --width: 1;
+        --height: 1;
+        --depth: 1;
       }
       #carousel .object > * {
         background: black;
@@ -24,7 +24,7 @@
       }
     </style>
   </head>
-  <body>
+  <body style="--unit:1em">
     <figure id="space" class="three-d space">
         <figure id="carousel" class="three-d spinning carousel">
           <div>

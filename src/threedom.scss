@@ -9,6 +9,9 @@
 
 $max_faces: 18;
 
+// Constant: 360 deg in radians
+$three-sixty: 6.28;
+
 /// Returns a clip-path for a polygon with $faces number of faces. If $invert
 /// is true, the y coordinates are flipped to produce an inverted (upside-down)
 /// clip path.
@@ -33,39 +36,7 @@ $max_faces: 18;
       $clip-path: $clip-path, (math.round($x * 100) / 100) (math.round($y1 * 100) / 100);
     }
   }
-  @return polygon($clip-path);
-}
-
-@mixin trigonometry {
-  /*
-    Many thanks to the author of this gist for the trig functions:
-    https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
-  */
-  --rad: calc(var(--angle) * #{math.$pi} / 180);
-  --pow2: calc(var(--rad) * var(--rad));
-  --pow3: calc(var(--pow2) * var(--rad));
-  --pow4: calc(var(--pow3) * var(--rad));
-  --pow5: calc(var(--pow4) * var(--rad));
-  --pow6: calc(var(--pow5) * var(--rad));
-  --pow7: calc(var(--pow6) * var(--rad));
-  --pow8: calc(var(--pow7) * var(--rad));
-  --pow9: calc(var(--pow8) * var(--rad));
-
-  --cos-term1: 1;
-  --cos-term2: calc(var(--pow2) / 2);
-  --cos-term3: calc(var(--pow4) / 24);
-  --cos-term4: calc(var(--pow6) / 720);
-  --cos-term5: calc(var(--pow8) / 40320);
-
-  --sin-term1: var(--rad);
-  --sin-term2: calc(var(--pow3) / 6);
-  --sin-term3: calc(var(--pow5) / 120);
-  --sin-term4: calc(var(--pow7) / 5040);
-  --sin-term5: calc(var(--pow9) / 362880);
-
-  --cos: calc(var(--cos-term1) - var(--cos-term2) + var(--cos-term3) - var(--cos-term4) + var(--cos-term5));
-  --sin: calc(var(--sin-term1) - var(--sin-term2) + var(--sin-term3) - var(--sin-term4) + var(--sin-term5));
-  --tan: calc(var(--sin) / var(--cos));
+  @return $clip-path;
 }
 
 // See http://lea.verou.me/2011/01/styling-children-based-on-their-number-with-css3/
@@ -83,14 +54,28 @@ $max_faces: 18;
   }
 }
 
-
 .three-d {
+  /*
   --x-rotation: var(---rotate-x, 0);
   --y-rotation: var(---rotate-y, 0);
   --z-rotation: var(---rotate-z, 0);
   --x-translation: var(---translate-x, 0);
   --y-translation: var(---translate-y, 0);
   --z-translation: var(---translate-z, 0);
+  */
+  --x-rotation: 0;
+  --y-rotation: 0;
+  --z-rotation: 0;
+  --x-translation: 0;
+  --y-translation: 0;
+  --z-translation: 0;
+
+  ---rotate-x: 0;
+  ---rotate-y: 0;
+  ---rotate-z: 0;
+  ---translate-x: 0;
+  ---translate-y: 0;
+  ---translate-z: 0;
 
   & > *:not(&) {
     --x-rotation: 0;
@@ -99,17 +84,27 @@ $max_faces: 18;
     --x-translation: 0;
     --y-translation: 0;
     --z-translation: 0;
+
+    ---rotate-x: 0;
+    ---rotate-y: 0;
+    ---rotate-z: 0;
+    ---translate-x: 0;
+    ---translate-y: 0;
+    ---translate-z: 0;
+
   }
 
   &, & > *:not(&) {
     --angle: 0;
+    --opposite: 0;
+    --adjacent: 0;
+
     --x2-rotation: 0;
     --y2-rotation: 0;
     --z2-rotation: 0;
     --x2-translation: 0;
     --y2-translation: 0;
     --z2-translation: 0;
-    @include trigonometry;
   }
 }
 
@@ -118,19 +113,8 @@ $max_faces: 18;
     All 3D classes get their width and height from the --width and
     --height CSS variables.
   */
-  width: var(---width);
-  height: var(---height);
-
-  & > *:not(&) {
-    /*
-      Direct descendants which are not 3D objects inherit the --width
-      and --height CSS variable values from their parent
-    */
-    // TODO Is this actually needed? Test with/without.
-    ---width: inherit;
-    ---height: inherit;
-    ---depth: inherit;
-  }
+  width: calc(var(---width)*var(---unit));
+  height: calc(var(---height)*var(---unit));
 
   &, & > * {
     /*
@@ -147,31 +131,68 @@ $max_faces: 18;
     /*
       All faces are absolutely positioned relative to their parent.
     */
+    position: absolute;
     // TODO The width/height inherit needs investigating, review the
     // above code etc to revisit what this actually does.
-    position: absolute;
     width: inherit;
     height: inherit;
   }
 
-  &, &:not(.space) > * {
+  & > *:not(&) {
+    background: var(---background, none);
+  }
+
+  &:not(.space), &:not(.space) > * {
     /*
       Applies the transforms to position the faces to create the shapes.
 
     */
-    transform:
+    // Note how these transforms are stored in a custom variable: this is
+    // so that the animations can set their own transforms on top of these
+    // without overwriting them. See the animation section for details.
+    --transforms1:
       rotateX(var(--x-rotation))
       rotateY(var(--y-rotation))
       rotateZ(var(--z-rotation))
       translate3d(
-        var(--x2-translation), var(--y2-translation), var(--z2-translation)
-      )
+        /* The 1st two aren't used anywhere, so commenting for performance */
+        0, /* calc(var(--x2-translation)*var(---unit)), */
+        0, /* calc(var(--y2-translation)*var(---unit)), */
+        calc(var(--z2-translation)*var(---unit))
+      );
+
+    --transforms2:
       rotateX(var(--x2-rotation))
       rotateY(var(--y2-rotation))
-      rotateZ(var(--z2-rotation))
+      /* This one isn't used anywhere, commenting for performance */
+      /* rotateZ(var(--z2-rotation)) */
       translate3d(
-        var(--x-translation), var(--y-translation), var(--z-translation)
-        );
+        calc(var(--x-translation)*var(---unit)),
+        calc(var(--y-translation)*var(---unit)),
+        calc(var(--z-translation)*var(---unit))
+      );
+
+    --transforms3:
+      rotateX(var(---rotate-x, 0))
+      rotateY(var(---rotate-y, 0))
+      rotateZ(var(---rotate-z, 0))
+      translate3d(
+        calc(var(---translate-x, 0)*var(---unit)),
+        calc(var(---translate-y, 0)*var(---unit)),
+        calc(var(---translate-z, 0)*var(---unit))
+      );
+
+    --transforms: var(--transforms1) var(--transforms2) var(--transforms3);
+    transform: var(--transforms);
+  }
+
+  &:not(.space):not(.compound) &:not(.space) {
+    /*
+      Compound (nested) objects should automatically sit on the face
+      on which they are placed.
+    */
+    ---rotate-x: 90deg;
+    ---translate-y: calc(var(---height)/2);
   }
 
   &.space {
@@ -204,13 +225,14 @@ $max_faces: 18;
       overflow: hidden;
     }
 
-    &.reflective {
-      /*
-        A reflective space has a reflection underneath it. Note that this
-        feature currently only supports Webkit browsers.
-      */
-      -webkit-box-reflect: below 0 var(--reflection);
-    }
+  }
+
+  &.space.reflective, &:not(.space).reflective > * {
+    /*
+      A reflective space has a reflection underneath it. Note that this
+      feature currently only supports Webkit browsers.
+    */
+    -webkit-box-reflect: below 0 var(---reflection);
   }
 
   // ======
@@ -242,14 +264,20 @@ $max_faces: 18;
     // ==========================
 
     @include children-of(4) {
-      --angle: 60;
+      @extend %trigonometry;
+
+      --angle: 1.05;
       /* only regular tetrahedrons are supported currently */
       ---height: var(---width) !important;
       ---depth: var(---width) !important;
-      --face-height: calc(var(---height) * var(--sin));
-      height: var(--face-height);
+      --face-height: calc(var(---height)*var(--sin));
+      height: calc(var(--face-height)*var(---unit));
       clip-path: polygon(50% 0, 0 100%, 100% 100%);
       transform-origin: 0 0;
+      // Check this works, it's to ensure that content within the face is
+      // nicely centered rather than being too high.
+      padding-top: calc((var(--height) - var(--face-height))*var(---unit));
+      box-sizing: border-box;
     }
 
     @include nth-child-of(1, 4) {
@@ -271,72 +299,126 @@ $max_faces: 18;
       --y-rotation: -120deg;
     }
 
-    @include nth-child-of(4, 4) {
-      /* The 4th face */
+    &:not(.quirksmode) {
+      @include nth-child-of(4, 4) {
+        /* The 4th face */
+        // This is technically correct but sometimes produces horrible effects
+        // on rotation, likely a Webkit bug
+        clip-path: polygon(0 0, 100% 0, 50% 100%);
+        --z-translation: calc(var(--face-height)*#{math.cos(19.5 * math.$pi / 180)});
+        --y-translation: calc(0 - var(--face-height)*#{math.sin(19.5 * math.$pi / 180)});
+        --x-rotation: -90deg;
+      }
+    }
 
-      // This is technically correct but produces horrible effects rotating
-      // clip-path: polygon(0 0, 100% 0, 50% 100%);
-      // --z-translation: calc(var(--face-height) * #{math.cos(19.5 * math.$pi / 180)});
-      // --x-rotation: -90deg;
-
-      // This isn't pretty and results in the face being upside down, but
-      // at least does not produce the nasty effects.
-      --z-translation: calc(0px - var(--face-height) * #{math.cos(19.5 * math.$pi / 180)});
-      --y-translation: calc(0px - 2 * var(--face-height) * #{math.sin(19.5 * math.$pi / 180)});
-      --x-rotation: 90deg;
+    &.quirksmode {
+      @include nth-child-of(4, 4) {
+        /* The 4th face */
+        // This results in the face being upside down, but at least
+        // does not produce the nasty effects.
+        --z-translation: calc(0 - var(--face-height)*#{math.cos(19.5 * math.$pi / 180)});
+        --y-translation: calc(0 - 2*var(--face-height)*#{math.sin(19.5 * math.$pi / 180)});
+        --x-rotation: 90deg;
+      }
     }
 
     // ====================
     // SIX FACES - A CUBOID
     // ====================
 
-    /*
-      top, right, bottom, left is the css standard
-      so for planes, I recommend front, top, right, back, bottom, left
-
-      BUT, IF I MAKE IT top, front, right, back, left, bottom
-      then it's all a little easier (shorter), no?
-    */
-
     @include nth-child-of(1, 6) {
       /* The 1st face */
-      --z-translation: calc(var(---depth) / 2);
+      height: calc(var(---depth)*var(---unit));
+      --z-translation: calc(var(---height)/2);
+      --x-rotation: 90deg;
     }
 
     @include nth-child-of(2, 6) {
       /* The 2nd face */
-      height: var(---depth);
-      --z-translation: calc(var(---height) / 2);
-      --x-rotation: 90deg;
+      --z-translation: calc(var(---depth)/2);
     }
 
     @include nth-child-of(3, 6) {
       /* The 3rd face */
-      width: var(---depth);
-      --z-translation: calc(var(---width) / 2);
+      width: calc(var(---depth)*var(---unit));
+      --z-translation: calc(var(---width)/2);
       --y-rotation: 90deg;
     }
 
     @include nth-child-of(4, 6) {
       /* The 4th face */
-      --z-translation: calc(var(---depth) / 2);
+      --z-translation: calc(var(---depth)/2);
       --y-rotation: 180deg;
     }
 
     @include nth-child-of(5, 6) {
       /* The 5th face */
-      height: var(---depth);
-      --z-translation: calc(var(---height) / 2);
-      --x-rotation: 270deg;
+      width: calc(var(---depth)*var(---unit));
+      --z-translation: calc(var(---width)/2);
+      --y-rotation: 270deg;
     }
 
     @include nth-child-of(6, 6) {
       /* The 6th face */
-      width: var(---depth);
-      --z-translation: calc(var(---width) / 2);
-      --y-rotation: 270deg;
+      height: calc(var(---depth)*var(---unit));
+      --z-translation: calc(var(---height)/2);
+      --x-rotation: 270deg;
     }
 
+  }
+
+  &.cone {
+    /*
+      Cones (experimental)
+    */
+    & > * {
+      @extend %trigonometry;
+      /* Sorry, not supporting a non-square depth until CSS has sine/cosine funcs */
+      ---depth: var(---width) !important;
+      --angle: calc(#{$three-sixty}/(var(--faces) - 1)/2);
+      --face-width: calc(var(--sin)*var(---width));
+      --radius: calc(var(--cos)*(var(---width)/2));
+
+      // ==============
+      // THE SIDE FACES
+      // ==============
+
+      &:not(:last-child) {
+        /*
+          The side faces of the cone. Each needs to be rotated to an
+          angle dependent on the total number of sides, and set to the
+          appropriate width so that the circumference of the cone
+          is correct to sit within the configured width/depth.
+        */
+        @extend %inverse-trigonometry;
+        width: calc(var(--face-width)*var(---unit));
+        transform-origin: 50% 100%;
+        clip-path: polygon(50% 0, 0 100%, 100% 100%);
+        --adjacent: var(---height);
+        --opposite: var(--radius);
+        --face-angle: calc(1deg*(360/(var(--faces) - 1)));
+        --y-rotation: calc(var(--face-angle)*(var(--face) - 1));
+        --x2-rotation:calc(1rad*var(--asin));
+        --z2-translation: var(--radius);
+      }
+
+      // ===============
+      // THE BOTTOM FACE
+      // ===============
+
+      &:last-child {
+        /*
+          This is the top face, which just needs to be clipped according to
+          the number of side faces, rotated to 120 degress and moved to the
+          bottom of the cone.
+        */
+        height: calc(var(---depth)*var(---unit));
+        clip-path: polygon(var(--cone-bottom));
+        --z-translation: calc(var(---height)/2);
+        --x-rotation: 270deg;
+      }
+
+    }
   }
 
   &.cylinder {
@@ -345,15 +427,12 @@ $max_faces: 18;
       to 16 side faces.
     */
     & > * {
+      @extend %trigonometry;
       /* Sorry, not supporting a non-square depth until CSS has sine/cosine funcs */
       ---depth: var(---width) !important;
-      // Alternative to using PI to convert from degrees (maybe)
-      // This should result in far fewer CSS calculations and therefore
-      // better performance - needs investigating further.
-      // --rad: calc(6.28 / (var(--faces) - 2) / 2);
-      --angle: calc(360 / (var(--faces) - 2) / 2);
-      --face-width: calc(var(--sin) * var(---width));
-      --radius: calc((var(--face-width) / 2) / var(--tan));
+      --angle: calc(#{$three-sixty}/(var(--faces) - 2)/2);
+      --face-width: calc(var(--sin)*var(---width));
+      --radius: calc(var(--cos)*(var(---width)/2));
 
       // ============
       // THE TOP FACE
@@ -365,9 +444,10 @@ $max_faces: 18;
           the number of side faces, rotated to 90 degress and moved to the
           top of the cylinder.
         */
-        height: var(---depth);
-        clip-path: var(--cylinder-top);
-        --z-translation: calc(var(---height) / 2);
+        align-self: flex-start;
+        height: calc(var(---depth)*var(---unit));
+        clip-path: polygon(var(--cylinder-top));
+        --z-translation: calc(var(---width)/2);
         --x-rotation: 90deg;
       }
 
@@ -382,9 +462,9 @@ $max_faces: 18;
           appropriate width so that the circumference of the cylinder
           is correct to sit within the configured width/depth.
         */
-        width: var(--face-width);
-        --face-angle: calc(1deg * (var(--angle) * 2));
-        --y2-rotation: calc(var(--face-angle) * (var(--face) - 2));
+        width: calc(var(--face-width)*var(---unit));
+        --face-angle: calc(1rad*(var(--angle)*2));
+        --y2-rotation: calc(var(--face-angle)*(var(--face) - 2));
         --z-translation: var(--radius);
       }
 
@@ -398,13 +478,20 @@ $max_faces: 18;
           to the top, except the clip path *may* need to be inverted because
           this face is rotated by 270deg rather than 90deg so it faces outward.
         */
-        height: var(---depth);
-        clip-path: var(--cylinder-bottom, var(--cylinder-top));
-        --z-translation: calc(var(---height) / 2);
+        align-self: flex-end;
+        height: calc(var(---depth)*var(---unit));
+        clip-path: polygon(var(--cylinder-bottom, var(--cylinder-top)));
+        --z-translation: calc(var(---width)/2);
         --x-rotation: 270deg;
       }
 
     }
+
+    &.wrapped > *:not(:first-child):not(:last-child) {
+      background-size: cover;
+      background-position-x: calc(var(--face-width)*(1 - var(--face))*var(--unit));
+    }
+
   }
 
   // ========
@@ -417,12 +504,13 @@ $max_faces: 18;
       face, so it is more like a tube than a cylinder.
     */
     & > * {
-      width: var(--face-width);
-      --angle: calc(360 / var(--faces) / 2);
-      --radius: calc((var(--face-width) / 2) / var(--tan));
-      --face-angle: calc(1deg * (var(--angle) * 2));
-      --face-width: calc(var(--sin) * var(---width));
-      --y2-rotation: calc(var(--face-angle) * (var(--face) - 1));
+      @extend %trigonometry;
+      width: calc(var(--face-width)*var(---unit));
+      --angle: calc(#{$three-sixty}/var(--faces)/2);
+      --radius: calc(var(--cos)*(var(---width)/2));
+      --face-angle: calc(1rad*(var(--angle)*2));
+      --face-width: calc(var(--sin)*var(---width));
+      --y2-rotation: calc(var(--face-angle)*(var(--face) - 1));
       --z-translation: var(--radius);
     }
     &.wrapped > * {
@@ -432,7 +520,7 @@ $max_faces: 18;
         the carousel.
       */
       background-size: cover;
-      background-position-x: calc(var(--face-width) * (1 - var(--face)));
+      background-position-x: calc(var(--face-width)*(1 - var(--face))*var(--unit));
     }
   }
 
@@ -446,12 +534,13 @@ $max_faces: 18;
       rather than the y-axis.
     */
     & > * {
-      height: var(--face-height);
-      --angle: calc(360 / var(--faces) / 2);
-      --radius: calc((var(--face-height) / 2) / var(--tan));
-      --face-angle: calc(1deg * (var(--angle) * 2));
-      --face-height: calc(var(--sin) * var(---height));
-      --x-rotation: calc(var(--face-angle) * (var(--face) - 1));
+      @extend %trigonometry;
+      height: calc(var(--face-height)*var(---unit));
+      --angle: calc(#{$three-sixty}/var(--faces)/2);
+      --radius: calc(var(--cos)*(var(---height)/2));
+      --face-angle: calc(1rad*(var(--angle)*2));
+      --face-height: calc(var(--sin)*var(---height));
+      --x-rotation: calc(var(--face-angle)*(var(--face) - 1));
       --z-translation: var(--radius);
     }
     &.wrapped > * {
@@ -461,7 +550,7 @@ $max_faces: 18;
         the wheel.
       */
       background-size: cover;
-      background-position-y: calc(var(--face-height) * (1 - var(--face)));
+      background-position-y: calc(var(--face-height)*(1 - var(--face))*var(--unit));
     }
   }
 
@@ -504,6 +593,31 @@ $max_faces: 18;
   // HELPER CLASSES
   // ==============
 
+  &.sample > *:not(&) {
+    &:nth-child(3n + 1) {
+      background: #0000ffbf;
+    }
+    &:nth-child(3n + 2) {
+      background: #00ff00bf;
+    }
+    &:nth-child(3n) {
+      background: #ff00ffbf;
+    }
+  }
+
+  // TODO Is this needed? Just make this a general rule like
+  // underneat:
+
+  // IT IS NEEDED - THE WORKING EXAMPLE OF A PARENT TETRAHEDRON
+  // IN THE TEST FILES REQUIRES IT TO WORK....
+
+  &.unclipped > * {
+    clip-path: none !important;
+  }
+
+  // I.E just apply this rule to all .three-d elements.
+  clip-path: none !important;
+
   &.no-backface > * {
     /*
       A shortcut class to hide the back faces.
@@ -511,28 +625,9 @@ $max_faces: 18;
     backface-visibility: hidden;
   }
 
-  &.shaded.object > * {
-    /*
-      The shaded class implements some very rudimentory shading. This
-      only works for objects which do not move, and currently only 6
-      sided shapes are supported (i.e cuboids).
-    */
-    filter: brightness(var(--brightness, 1));
-    &:nth-child(2) {
-      --brightness: 1.2; /* top */
-    }
-    &:nth-child(3) {
-      --brightness: 0.9; /* right */
-    }
-    &:nth-child(4) {
-      --brightness: 0.8; /* back */
-    }
-    &:nth-child(5) {
-      --brightness: 1.1; /* left */
-    }
-    &:nth-child(6) {
-      --brightness: 0.8; /* bottom */
-    }
+  &.shaded > * {
+    --shading: calc((var(--face) / var(--faces))*1.15 - 0.575);
+    filter: brightness(calc(0.75 + (var(--shading) * var(--shading))));
   }
 
   &.seated.object {
@@ -564,18 +659,85 @@ $max_faces: 18;
   }
   @for $i from 1 through $max_faces {
     & > *:nth-child(#{$i}) {
+      ---index: #{$i - 1};
       --face: #{$i};
     }
     @include children-of($i) {
       --faces: #{$i};
-      @if $i > 4 {
-        --cylinder-top: #{get-clip-path($i - 2)};
+      @if $i > 2 {
+        --cylinder-top: var(--polygon-#{$i - 2});
         @if $i % 2 == 1 {
-          --cylinder-bottom: #{get-clip-path($i - 2, true)};
+          --cone-bottom: var(--polygon-#{$i - 1});
+          --cylinder-bottom: var(--inverse-polygon-#{$i - 2});
+        } @else {
+          --cone-bottom: var(--inverse-polygon-#{$i - 1});
         }
       }
     }
   }
+}
+
+// =======================
+// TRIGONOMETRIC FUNCTIONS
+// =======================
+
+//  These placeholders are intended to be @extended where they are needed, as
+//  we don't want these calculations to take place for every DOM node, just
+//  the ones that need it, for performance reasons.
+
+//  For trigonometry, set the --angle variable to the angle to be calculated,
+//  and then use the --sin and --cos variables to get the sine and cosine for
+//  the angle.
+
+%trigonometry {
+  /*
+  Many thanks to the author of this gist for the idea for these:
+  https://gist.github.com/stereokai/7666bfe93929b14c2dced148c79e0e97
+  */
+  --pow2: calc(var(--angle)*var(--angle));
+  --pow3: calc(var(--pow2)*var(--angle));
+  --pow4: calc(var(--pow3)*var(--angle));
+  --pow5: calc(var(--pow4)*var(--angle));
+  --pow6: calc(var(--pow5)*var(--angle));
+  --pow7: calc(var(--pow6)*var(--angle));
+  --pow8: calc(var(--pow7)*var(--angle));
+  --pow9: calc(var(--pow8)*var(--angle));
+
+  --cos-term2: calc(var(--pow2)/2);
+  --cos-term3: calc(var(--pow4)/24);
+  --cos-term4: calc(var(--pow6)/720);
+  --cos-term5: calc(var(--pow8)/40320);
+
+  --sin-term2: calc(var(--pow3)/6);
+  --sin-term3: calc(var(--pow5)/120);
+  --sin-term4: calc(var(--pow7)/5040);
+  --sin-term5: calc(var(--pow9)/362880);
+
+  --cos: calc(1 - var(--cos-term2) + var(--cos-term3) - var(--cos-term4) + var(--cos-term5));
+  --sin: calc(var(--angle) - var(--sin-term2) + var(--sin-term3) - var(--sin-term4) + var(--sin-term5));
+  // This is not used anymore, leaving it commented in case
+  // it's needed in future, but in theory cos and sin are enough
+  // --tan: calc(var(--sin)/var(--cos));
+}
+
+//  For inverse-trigonometry, set the --opposite and --adjacent variables, and
+//  then the --asin variable will contain the arcsine of the ratio between the
+//  lengths.
+
+%inverse-trigonometry {
+  --ratio: calc(var(--opposite)/var(--adjacent));
+
+  --apow3: calc(var(--ratio)*var(--ratio)*var(--ratio));
+  --apow5: calc(var(--apow3)*var(--ratio)*var(--ratio));
+  --apow7: calc(var(--apow5)*var(--ratio)*var(--ratio));
+  --apow9: calc(var(--apow7)*var(--ratio)*var(--ratio));
+
+  --asin-term2: calc(#{(1/6)}*var(--apow3));
+  --asin-term3: calc(#{(3/40)}*var(--apow5));
+  --asin-term4: calc(#{(5/112)}*var(--apow7));
+  --asin-term5: calc(#{(35/1152)}*var(--apow9));
+
+  --asin: calc(var(--ratio) + var(--asin-term2) + var(--asin-term3) + var(--asin-term4) + var(--asin-term5));
 }
 
 // =============
@@ -599,10 +761,10 @@ figure.three-d {
 
 @keyframes rotating {
   from {
-    transform: rotate3d(var(--rx, 1), var(--ry, 1), var(--rz, 1), var(--from, 0deg));
+    transform: var(--transforms) rotate3d(var(--rx, 1), var(--ry, 1), var(--rz, 1), var(--from, 0deg));
   }
   to {
-    transform: rotate3d(var(--rx, 1), var(--ry, 1), var(--rz, 1), var(--to, 360deg));
+    transform: var(--transforms) rotate3d(var(--rx, 1), var(--ry, 1), var(--rz, 1), var(--to, 360deg));
   }
 }
 
@@ -611,5 +773,16 @@ figure.three-d {
 // ==============
 
 :root {
-  --reflection: url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjIxMG1tIiBoZWlnaHQ9IjI5N21tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMTAgMjk3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4NCjxkZWZzPg0KPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMTA3LjY3IiB4Mj0iMTA3LjQ1IiB5MT0iMzkzLjc0IiB5Mj0iMTQ0LjM4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEuMzYxMiAwIDAgMSAtMzkuMjQ1IDApIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQo8c3RvcCBzdG9wLWNvbG9yPSIjMDYwMDAwIiBvZmZzZXQ9IjAiLz4NCjxzdG9wIHN0b3AtY29sb3I9IiMwNjAwMDAiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxIi8+DQo8L2xpbmVhckdyYWRpZW50Pg0KPC9kZWZzPg0KPG1ldGFkYXRhPg0KPHJkZjpSREY+DQo8Y2M6V29yayByZGY6YWJvdXQ9IiI+DQo8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4NCjxkYzp0eXBlIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiLz4NCjxkYzp0aXRsZS8+DQo8L2NjOldvcms+DQo8L3JkZjpSREY+DQo8L21ldGFkYXRhPg0KPHJlY3QgeD0iLS4zMjUxOSIgeT0iMS4wNDA5IiB3aWR0aD0iMjEwLjM5IiBoZWlnaHQ9IjI5Ni42OSIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2Utd2lkdGg9Ii4zMDg2OCIvPg0KPC9zdmc+');
+  ---unit: 1px;
+
+  @for $i from 1 through $max_faces {
+    @if $i > 1 {
+      --polygon-#{$i}: #{get-clip-path($i)};
+      @if $i % 2 == 1 {
+        --inverse-polygon-#{$i}: #{get-clip-path($i, true)};
+      }
+    }
+  }
+
+  ---reflection: url('data:image/svg+xml;charset=utf-8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjxzdmcgd2lkdGg9IjIxMG1tIiBoZWlnaHQ9IjI5N21tIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMTAgMjk3IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOmNjPSJodHRwOi8vY3JlYXRpdmVjb21tb25zLm9yZy9ucyMiIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4NCjxkZWZzPg0KPGxpbmVhckdyYWRpZW50IGlkPSJhIiB4MT0iMTA3LjY3IiB4Mj0iMTA3LjQ1IiB5MT0iMzkzLjc0IiB5Mj0iMTQ0LjM4IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDEuMzYxMiAwIDAgMSAtMzkuMjQ1IDApIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+DQo8c3RvcCBzdG9wLWNvbG9yPSIjMDYwMDAwIiBvZmZzZXQ9IjAiLz4NCjxzdG9wIHN0b3AtY29sb3I9IiMwNjAwMDAiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxIi8+DQo8L2xpbmVhckdyYWRpZW50Pg0KPC9kZWZzPg0KPG1ldGFkYXRhPg0KPHJkZjpSREY+DQo8Y2M6V29yayByZGY6YWJvdXQ9IiI+DQo8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4NCjxkYzp0eXBlIHJkZjpyZXNvdXJjZT0iaHR0cDovL3B1cmwub3JnL2RjL2RjbWl0eXBlL1N0aWxsSW1hZ2UiLz4NCjxkYzp0aXRsZS8+DQo8L2NjOldvcms+DQo8L3JkZjpSREY+DQo8L21ldGFkYXRhPg0KPHJlY3QgeD0iLS4zMjUxOSIgeT0iMS4wNDA5IiB3aWR0aD0iMjEwLjM5IiBoZWlnaHQ9IjI5Ni42OSIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2Utd2lkdGg9Ii4zMDg2OCIvPg0KPC9zdmc+');
 }

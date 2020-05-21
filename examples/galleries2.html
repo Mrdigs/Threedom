@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.css">
+    <style media="screen">
+      body {
+        background: black;
+        color: white;
+      }
+      a {
+        height: 100%;
+        width: 50px;
+        font-size: 40px;
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 20px;
+        z-index: 1;
+      }
+      #gallery {
+        transition: transform 0.8s;
+        margin-top: 50px;
+      }
+      #gallery p {
+        background: #00000096;
+        padding: 20px;
+        align-self: flex-end;
+        margin: 0;
+      }
+      #gallery > * {
+        background-size: cover;
+      }
+      #gallery > *:nth-child(2) {
+        --background: url(http://www.mi-television.com/uploads/1/0/3/0/103099212/tarzan-1_orig.jpg);
+      }
+      #gallery > *:nth-child(3) {
+        --background: url(http://www.mi-television.com/uploads/1/0/3/0/103099212/la-mujer_2_orig.jpg);
+      }
+      #gallery > *:nth-child(4) {
+        --background: url(http://www.mi-television.com/uploads/1/0/3/0/103099212/el-hombre-nuclear_orig.jpg);
+      }
+      #gallery > *:nth-child(5) {
+        --background: url(http://www.mi-television.com/uploads/1/0/3/0/103099212/invasion-2_orig.jpg);
+      }
+    </style>
+    <script type="text/javascript">
+      function slide(direction) {
+        var gallery = document.querySelector('#gallery');
+        var face = parseInt(gallery.dataset.face);
+        var counter = face + direction;
+        gallery.dataset.face = counter;
+        gallery.style.setProperty('--rotate-y', (counter * 90) + 'deg')
+      }
+    </script>
+  </head>
+  <body>
+
+    <!--
+    <figure class="three-d space" style="width:600px;height:500px;margin: auto;">
+      <a href="#" onclick="slide(1)">&lt;</a>
+      <div style="transform: translateZ(-300px);">
+        <figure id="gallery" data-face="0" class="three-d object" style="--height:462;--width:600;--depth:600;">
+          <div></div>
+          <div>
+            <p>
+              Tarzán: El protagonista de la película. Siendo un bebé, él y sus
+              padres naufragaron en las costas de África, viéndose obligados a
+              abandonar su barco subsistir en medio de la selva. Sin embargo los
+              padres de Tarzán son devorados por un leopardo llamado Sabor, Tarzán
+              es encontrado y criado por una manada de gorilas.
+            </p>
+          </div>
+          <div>
+            <p>
+              La Mujer Maravilla (en inglés: Wonder Woman) es una superheroína
+              ficticia creada por William Moulton Marston para la editorial DC
+              Comics. El personaje es una princesa guerrera de las Amazonas
+              (basado en la raza de las amazonas de la mitología griega) y es
+              conocida en su tierra natal como la princesa Diana de Temiscira.
+            </p>
+          </div>
+          <div>
+            <p>
+              The Six Million Dollar Man, conocida en Hispanoamérica como El
+              hombre nuclear y en España como El hombre de los seis millones de
+              dólares, es una serie de televisión norteamericana emitida entre
+              1973 y 1978, basada en la novela Cyborg de Martin Caidin.
+            </p>
+          </div>
+          <div>
+            <p>
+              Producida en los Estados Unidos y escrita y dirigida por Kenneth
+              Johnson, V Invasión Extraterrestre narraba la historia de
+              extraterrestres reptiloides (con apariencia humana) que llegan a la
+              Tierra con la oculta intención de robar toda el agua del mundo y
+              cosechar a la humanidad como fuente de alimento.
+            </p>
+          </div>
+          <div></div>
+        </figure>
+      </div>
+      <a href="#" onclick="slide(-1)">&gt;</a>
+    </figure>
+    -->
+
+    <figure class="three-d space" style="width:600px;height:500px;margin:auto;perspective:80vmax;" onclick="slide2(-1)">
+      <div style="transform: translateZ(-60px);">
+        <figure id="gallery2" data-turn="0" data-face="0" class="three-d carousel" style="--height:200;--width:800;--depth:800;">
+            <div style="background-image:url(http://www.mi-television.com/uploads/1/0/3/0/103099212/la-mujer_2_orig.jpg)">
+              <p>
+                La Mujer Maravilla (en inglés: Wonder Woman) es una superheroína
+                ficticia creada por William Moulton Marston para la editorial DC
+                Comics. El personaje es una princesa guerrera de las Amazonas
+                (basado en la raza de las amazonas de la mitología griega) y es
+                conocida en su tierra natal como la princesa Diana de Temiscira.
+              </p>
+            </div>
+            <div></div>
+            <div style="background-image:url(http://www.mi-television.com/uploads/1/0/3/0/103099212/tarzan-1_orig.jpg)">
+              <p>
+                Tarzán: El protagonista de la película. Siendo un bebé, él y sus
+                padres naufragaron en las costas de África, viéndose obligados a
+                abandonar su barco subsistir en medio de la selva. Sin embargo los
+                padres de Tarzán son devorados por un leopardo llamado Sabor, Tarzán
+                es encontrado y criado por una manada de gorilas.
+              </p>
+            </div>
+            <div></div>
+            <div style="background-image:url(http://www.mi-television.com/uploads/1/0/3/0/103099212/el-hombre-nuclear_orig.jpg)">
+              <p>
+                The Six Million Dollar Man, conocida en Hispanoamérica como El
+                hombre nuclear y en España como El hombre de los seis millones de
+                dólares, es una serie de televisión norteamericana emitida entre
+                1973 y 1978, basada en la novela Cyborg de Martin Caidin.
+              </p>
+            </div>
+            <div></div>
+            <div style="background-image:url(http://www.mi-television.com/uploads/1/0/3/0/103099212/invasion-2_orig.jpg)">
+              <p>
+                Producida en los Estados Unidos y escrita y dirigida por Kenneth
+                Johnson, V Invasión Extraterrestre narraba la historia de
+                extraterrestres reptiloides (con apariencia humana) que llegan a la
+                Tierra con la oculta intención de robar toda el agua del mundo y
+                cosechar a la humanidad como fuente de alimento.
+              </p>
+            </div>
+            <div></div>
+        </figure>
+      </div>
+    </figure>
+
+    <style media="screen">
+      #gallery2 {
+        transition: transform 0.8s;
+        margin-top: 50px;
+        margin-bottom: 50px;
+      }
+      #gallery2 p {
+        transition: opacity 0.8s;
+        background: #0000007d;
+        font-size: 10px;
+        padding: 10px;
+        align-self: flex-end;
+        margin: 0;
+        opacity: 0;
+      }
+      #gallery2 > *:hover p {
+        opacity: 1;
+      }
+      #gallery2 > * {
+        background-size: cover;
+        transition: transform 0.8s;
+        -webkit-box-reflect: below 0 var(--reflection);
+      }
+      #gallery2[data-turn='0'] > *:nth-child(7) {
+        --rotate-y: 145deg;
+      }
+      #gallery2[data-turn='0'] > *:nth-child(5) {
+        --rotate-y: 90deg;
+      }
+      #gallery2[data-turn='0'] > *:nth-child(3) {
+        --rotate-y: -145deg;
+      }
+      #gallery2[data-turn='1'] > *:nth-child(1) {
+        --rotate-y: 145deg;
+      }
+      #gallery2[data-turn='1'] > *:nth-child(7) {
+        --rotate-y: 90deg;
+      }
+      #gallery2[data-turn='1'] > *:nth-child(5) {
+        --rotate-y: -145deg;
+      }
+      #gallery2[data-turn='2'] > *:nth-child(3) {
+        --rotate-y: 145deg;
+      }
+      #gallery2[data-turn='2'] > *:nth-child(1) {
+        --rotate-y: 90deg;
+      }
+      #gallery2[data-turn='2'] > *:nth-child(7) {
+        --rotate-y: -145deg;
+      }
+      #gallery2[data-turn='3'] > *:nth-child(5) {
+        --rotate-y: 145deg;
+      }
+      #gallery2[data-turn='3'] > *:nth-child(3) {
+        --rotate-y: 90deg;
+      }
+      #gallery2[data-turn='3'] > *:nth-child(1) {
+        --rotate-y: -145deg;
+      }
+    </style>
+
+    <script type="text/javascript">
+      function slide2(direction) {
+        var gallery = document.querySelector('#gallery2');
+        var face = parseInt(gallery.dataset.face);
+        var counter = face + direction;
+        var rotation = counter * 90;
+        gallery.dataset.face = counter;
+        gallery.style.setProperty('--rotate-y', rotation + 'deg')
+        gallery.setAttribute('data-turn', Math.abs(counter % 4))
+      }
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.min.css">
+  </head>
+  <body style="--unit:1vmin">
+    <h1>Private Spaces</h1>
+    <p>
+      Generally, the objects inside a space are part of the page: if an object
+      within protrudes beyond it's boundaries then it will overlap with
+      content outside the space:
+    </p>
+    <figure class="three-d space">
+      <figure class="sample three-d quickly rotating object" style="--width:20;--height:20;--depth:20">
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+      </figure>
+    </figure>
+    <p>
+      If a space has the <code>private</code> class applied, then it's
+      <code>overflow</code> is set to hidden and it will behave more like
+      a window:
+    </p>
+    <figure class="three-d private space">
+      <figure class="sample three-d quickly rotating object" style="--width:20;--height:20;--depth:20">
+        <div></div><div></div><div></div><div></div><div></div><div></div>
+      </figure>
+    </figure>
+  </body>
+</html>

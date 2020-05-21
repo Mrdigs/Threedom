@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../build/threedom.min.css">
+    <style media="screen">
+      .three-d.space {
+        margin: 5vmax;
+      }
+    </style>
+  </head>
+  <body style="--unit:1vmin">
+    <h1>Bugs / Quirks</h1>
+    <h3>4th Face of Tetrahedron</h3>
+    <p>
+      <strong>TODO</strong> Test padding-top: 26px; box-sizing: border-box; on
+      the faces to see if it helps with the centering when placing objects
+      on them.
+    </p>
+    <figure class="three-d space">
+      <figure class="sample three-d rotating object" style="--width:20;--height:20">
+        <div>1</div><div>2</div><div>3</div><div>4</div>
+      </figure>
+    </figure>
+    <figure class="three-d space">
+      <figure class="sample three-d rotating quirksmode object" style="--width:20;--height:20">
+        <div>1</div><div>2</div><div>3</div><div>4</div>
+      </figure>
+    </figure>
+    <figure class="three-d space" style="--unit:1px">
+      <figure class="sample three-d rotating object" style="--width:150;--height:150">
+        <div>1</div><div>2</div><div>3</div><div>4</div>
+      </figure>
+    </figure>
+  </body>
+</html>
